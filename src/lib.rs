@@ -65,28 +65,25 @@ pub struct Spinner {
 /// # Notes
 /// * The spinner immediately starts spinning upon creation.
 pub fn new(spinner_type: Spinners, msg: StringLiteral, color: Option<StringLiteral>) -> Spinner {
-    let spinner_data = SPINNER_FRAMES
-        .get(&spinner_type)
-        .expect("invalid spinner: expected variant of Spinners enum");
-    let mut stdout = stdout();
-    let mut i = 0;
     let still_spinning = Arc::new(AtomicBool::new(true));
     // Clone the atomic bool so that we can use it in the thread and return the original one later.
     let still_spinning_cloned = still_spinning.clone();
     // We use atomic bools to make the thread stop itself when the `spinner.stop()` method is called.
     thread::spawn(move || {
-        while still_spinning_cloned.load(std::sync::atomic::Ordering::Relaxed) {
-            let text = format!(
-                "\r{} {}",
-                init_color(color, spinner_data.frames[i].to_string()),
-                msg
-            );
+        let spinner_data = SPINNER_FRAMES.get(&spinner_type).unwrap();
+        let mut stdout = stdout();
+        let iterator = spinner_data
+            .frames
+            .iter()
+            .cycle()
+            .take_while(|_| still_spinning_cloned.load(std::sync::atomic::Ordering::Relaxed));
+        for frame in iterator {
+            let text = format!("\r{} {}", init_color(color, frame.to_string()), msg);
             stdout.write_all(text.as_bytes()).unwrap();
             stdout.flush().unwrap();
             thread::sleep(std::time::Duration::from_millis(
                 spinner_data.interval as u64,
             ));
-            i = (i + 1) % spinner_data.frames.len();
         }
     });
     // Return a Spinner struct so we can implement methods on it instead of `spinoff::stop()` etc.
@@ -165,7 +162,12 @@ impl Spinner {
     /// # Notes
     /// * This method will delete the last line of the terminal, so it is recommended to not print anything in between the spinner and the success message.
     /// * This method cannot be called if the spinner is already stopped.
-    pub fn stop_and_persist(self, symbol: StringLiteral, msg: StringLiteral, color: Option<StringLiteral>) {
+    pub fn stop_and_persist(
+        self,
+        symbol: StringLiteral,
+        msg: StringLiteral,
+        color: Option<StringLiteral>,
+    ) {
         self.clear();
         println!("{} {}", init_color(color, symbol.into()), &msg);
     }
@@ -251,7 +253,12 @@ impl Spinner {
     /// * This method will delete the last line of the terminal, so it is recommended to not print anything in between the spinner and the new spinner instance.
     /// * This method cannot be called if the spinner is already stopped.
     ///
-    pub fn update(self, spinner: Spinners, msg: StringLiteral, color: Option<StringLiteral>) -> Spinner {
+    pub fn update(
+        self,
+        spinner: Spinners,
+        msg: StringLiteral,
+        color: Option<StringLiteral>,
+    ) -> Spinner {
         self.still_spinning
             .store(false, std::sync::atomic::Ordering::Relaxed);
         delete_last_line(self.msg);
