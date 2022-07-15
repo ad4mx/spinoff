@@ -8,7 +8,7 @@ license = "MIT"
 homepage = "https://github.com/ad4mx/spinoff"
 repository = "https://github.com/ad4mx/spinoff"
 readme = "README.md"
-keywords = ["spinner", "spin", "loader", "term", "terminal"]
+keywords = ["spinner", "spin", "loader", "cli", "terminal"]
 categories = ["command-line-interface"]
 include = ["src/**/*", "README.md"]
 

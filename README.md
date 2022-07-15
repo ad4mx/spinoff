@@ -1,7 +1,7 @@
 # spinoff
 `spinoff` is a simple to use library for displaying spinners in the terminal, with plenty of features and options.
 
-[![Cargo version](https://img.shields.io/crates/v/spinoff.svg)](https://crates.io/crates/spinoff) [![Crates.io](https://img.shields.io/crates/l/spinoff.svg)] [![Crates.io](https://img.shields.io/crates/d/spinoff.svg)](https://crates.io/crates/spinoff)
+[![Cargo version](https://img.shields.io/crates/v/spinoff.svg)](https://crates.io/crates/spinoff) ![Crates.io](https://img.shields.io/crates/l/spinoff.svg) [![Crates.io](https://img.shields.io/crates/d/spinoff.svg)](https://crates.io/crates/spinoff)
 
 ## Usage
 
