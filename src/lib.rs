@@ -72,6 +72,7 @@ pub fn new(spinner_type: Spinners, msg: StringLiteral, color: Option<StringLiter
     thread::spawn(move || {
         let spinner_data = SPINNER_FRAMES.get(&spinner_type).unwrap();
         let mut stdout = stdout();
+        // Iterate over all the frames of the spinner while the atomic bool is true.
         let iterator = spinner_data
             .frames
             .iter()
