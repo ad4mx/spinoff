@@ -10,10 +10,25 @@ use spinoff::Spinners;
 use std::thread::sleep;
 use std::time::Duration;
 
-let spinner = spinoff::new(Spinners::Dots, "Loading...", "Blue".into()); // Can also be Some("blue") or None
+let spinner = spinoff::new(Spinners::Dots, "Loading...", "blue".into()); // Can also be Some("blue") or None
 sleep(Duration::from_secs(3));
 spinner.success("Done!");
 ```
+
+### Update a spinner
+
+```rust
+use spinoff::Spinners;
+use std::thread::sleep;
+use std::time::Duration;
+
+let mut spinner = spinoff::new(Spinners::Dots, "Loading...", "blue".into());
+sleep(Duration::from_secs(3));
+spinner = spinner.update(Spinners::Dots2, "Loading...", None);
+sleep(Duration::from_secs(3));
+spinner.success("Done!");
+```
+
 
 ## Documentation
 
