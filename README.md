@@ -3,6 +3,12 @@
 
 [![Version](https://img.shields.io/crates/v/spinoff.svg)](https://crates.io/crates/spinoff) [![Downloads](https://img.shields.io/crates/d/spinoff)](https://crates.io/crates/spinoff) [![Docs](https://img.shields.io/docsrs/spinoff)](https://docs.rs/spinoff/latest/spinoff/)
 
+<p align="center">
+	<br>
+	<img width="900" src="assets/example.svg">
+	<br>
+	<br>
+</p>
 
 ## Usage
 
