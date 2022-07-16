@@ -26,7 +26,7 @@ let mut spinner = spinoff::new(Spinners::Dots, "Loading...", "blue".into());
 sleep(Duration::from_secs(3));
 spinner = spinner.update(Spinners::Dots2, "Loading...", None);
 sleep(Duration::from_secs(3));
-spinner.success("Done!");
+spinner.stop_and_persist("👨‍💻", "Done!");
 ```
 
 

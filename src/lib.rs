@@ -139,9 +139,9 @@ impl Spinner {
     /// # Notes
     /// * This method cannot be called if the spinner is already stopped.
     ///
-    pub fn stop_with_message(self, msg: StringLiteral, color: Option<StringLiteral>) {
+    pub fn stop_with_message(self, msg: StringLiteral) {
         self.stop();
-        println!("{}", init_color(color, msg.into()));
+        println!("{}", &msg);
     }
 
     /// Deletes the spinner and message and prints a new line with a symbol and message.
@@ -154,7 +154,7 @@ impl Spinner {
     ///
     /// let sp = spinoff::new(Spinners::Dots, "Hello", None);
     /// sleep(Duration::from_millis(800));
-    /// sp.stop_and_persist("🍕", "Pizza!", None);
+    /// sp.stop_and_persist("🍕", "Pizza!");
     /// ```
     ///
     /// # Panics
@@ -163,14 +163,9 @@ impl Spinner {
     /// # Notes
     /// * This method will delete the last line of the terminal, so it is recommended to not print anything in between the spinner and the success message.
     /// * This method cannot be called if the spinner is already stopped.
-    pub fn stop_and_persist(
-        self,
-        symbol: StringLiteral,
-        msg: StringLiteral,
-        color: Option<StringLiteral>,
-    ) {
+    pub fn stop_and_persist(self, symbol: StringLiteral, msg: StringLiteral) {
         self.clear();
-        println!("{} {}", init_color(color, symbol.into()), &msg);
+        println!("{} {}", &symbol, &msg);
     }
 
     /// Deletes the last line of the terminal and prints a success symbol with a message.
@@ -190,7 +185,8 @@ impl Spinner {
     /// * This method cannot be called if the spinner is already stopped.
     /// * This method will delete the last line of the terminal, so it is recommended to not print anything in between the spinner and the success message.
     pub fn success(self, msg: StringLiteral) {
-        self.stop_and_persist("✔", msg, "green".into());
+        self.clear();
+        println!("{} {}", init_color(Some("green"), "✔".to_string()), &msg);
     }
 
     /// Deletes the last line of the terminal and prints a failure symbol with a message.
@@ -211,7 +207,8 @@ impl Spinner {
     /// * This method cannot be called if the spinner is already stopped.
     ///
     pub fn fail(self, msg: StringLiteral) {
-        self.stop_and_persist("✖", msg, "red".into());
+        self.clear();
+        println!("{} {}", init_color(Some("red"), "✖".to_string()), &msg);
     }
 
     /// Deletes the last line of the terminal and prints a warning symbol with a message.
@@ -232,7 +229,8 @@ impl Spinner {
     /// * This method will delete the last line of the terminal, so it is recommended to not print anything in between the spinner and the warning message.
     /// * This method cannot be called if the spinner is already stopped.
     pub fn warn(self, msg: StringLiteral) {
-        self.stop_and_persist("⚠ ", msg, "yellow".into());
+        self.clear();
+        println!("{} {}", init_color(Some("yellow"), "⚠".to_string()), &msg);
     }
 
     /// Deletes the last line of the terminal and prints a new spinner.
