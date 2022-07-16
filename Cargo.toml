@@ -2,7 +2,7 @@
 name = "spinoff"
 version = "0.1.1"
 edition = "2021"
-author = "ad4m"
+authors = ["ad4m"]
 description = "🔨 Simple to use Rust library for displaying spinners in the terminal."
 license = "MIT"
 homepage = "https://github.com/ad4mx/spinoff"
@@ -13,8 +13,8 @@ categories = ["command-line-interface"]
 include = ["src/**/*", "README.md"]
 
 [dependencies]
-lazy_static = "1.4.0"
 maplit = "1.0.2"
 yansi = "0.5.1"
 strum = { version = "0.24.0", features = ["derive"] }
+once_cell = "1.13.0"
 
