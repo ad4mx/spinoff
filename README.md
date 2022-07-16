@@ -3,6 +3,7 @@
 
 [![Version](https://img.shields.io/crates/v/spinoff.svg)](https://crates.io/crates/spinoff) [![Downloads](https://img.shields.io/crates/d/spinoff)](https://crates.io/crates/spinoff) [![Docs](https://img.shields.io/docsrs/spinoff)](https://docs.rs/spinoff/latest/spinoff/)
 
+[![asciicast](https://asciinema.org/a/509075.svg)](https://asciinema.org/a/509075)
 
 ## Usage
 
