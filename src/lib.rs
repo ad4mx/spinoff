@@ -130,7 +130,7 @@ impl Spinner {
     ///
     /// let sp = spinoff::new(Spinners::Dots, "Hello", None);
     /// sleep(Duration::from_millis(800));
-    /// sp.stop_with_message("Bye", "red".into());
+    /// sp.stop_with_message("Bye");
     /// ```
     ///
     /// # Panics
