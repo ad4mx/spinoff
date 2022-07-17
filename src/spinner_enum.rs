@@ -1,8 +1,17 @@
 use strum::EnumIter;
+
 /// An enum of all the available spinners.
+///
 /// Contains around 80+ spinners.
+/// It is recommended to use the `all_spinners` example to view each spinner's animation.
+///
+/// ```ignore
+/// cargo run --example all_spinners
+/// ```
+///
 /// Each variant in this enum is assigned to a HashMap holding it's frames and interval count.
-#[derive(Debug, Eq, Hash, PartialEq, EnumIter)]
+///
+#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, EnumIter, strum::Display)]
 pub enum Spinners {
     Dots,
     Dots2,

@@ -1,8 +1,8 @@
-use spinoff::Spinners;
-use std::thread::sleep;
-use std::time::Duration;
+use spinoff::{Spinner, Spinners};
+use std::{thread::sleep, time::Duration};
+
 fn main() {
-    let sp = spinoff::new(Spinners::Dots, "Loading...", None);
-    sleep(Duration::from_millis(800));
+    let sp = Spinner::new(Spinners::Dots, "Loading...", None);
+    sleep(Duration::from_millis(8000));
     sp.success("Success!");
 }

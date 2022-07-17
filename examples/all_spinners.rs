@@ -1,12 +1,12 @@
-use spinoff::Spinners;
-use std::thread::sleep;
-use std::time::Duration;
+use spinoff::{Spinner, Spinners};
+use std::{thread::sleep, time::Duration};
 use strum::IntoEnumIterator;
+
 fn main() {
-    let mut spin = spinoff::new(Spinners::Dots, "Spinning...", None);
+    let mut spin = Spinner::new(Spinners::Dots, "", None);
     for spinner in Spinners::iter() {
-        spin = spin.update(spinner, "Spinning...", None);
-        sleep(Duration::from_secs(1));
+        spin.update(spinner, format!("Spinners::{}", spinner), None);
+        sleep(Duration::from_secs(2));
     }
-    println!("Done!");
+    spin.stop_with_message("Done!");
 }
