@@ -4,12 +4,7 @@
 [![Version](https://img.shields.io/crates/v/spinoff.svg)](https://crates.io/crates/spinoff) [![Downloads](https://img.shields.io/crates/d/spinoff)](https://crates.io/crates/spinoff) [![Docs](https://img.shields.io/docsrs/spinoff)](https://docs.rs/spinoff/latest/spinoff) [![License](https://img.shields.io/crates/l/spinoff)](https://crates.io/crates/spinoff) ![Actions](https://img.shields.io/github/workflow/status/ad4mx/spinoff/Rust)
 
 
-<p>
-	<br>
-	<img width="800" src="assets/index.gif">
-	<br>
-	<br>
-</p>
+![til](assets/index.gif)
 
 ## ⚡ Usage
 
@@ -30,12 +25,26 @@ use spinoff::{Spinner, Spinners, Color};
 use std::thread::sleep;
 use std::time::Duration;
 
-let mut spinner = Spinner::new(Spinners::Dots, "Loading...", Some(Color::Blue)); 
+let mut spinner = Spinner::new(Spinners::Dots, "Loading...", Some(Color::Red)); 
 sleep(Duration::from_secs(3));
 spinner.update(Spinners::Dots2, "Loading...", None);
 sleep(Duration::from_secs(3));
 spinner.stop_and_persist("👨‍💻", "Done!");
 ```
+
+### Stop a spinner and persist a symbol and message
+
+```rust
+use spinoff::{Spinner, Spinners, Color};
+use std::thread::sleep;
+use std::time::Duration;
+
+let mut spinner = Spinner::new(Spinners::Dots, "Loading...", Some(Color::Green));
+sleep(Duration::from_secs(3));
+spinner.stop_and_persist("📜", "Task done.");
+```
+
+Other examples can be found in the [documentation](https://docs.rs/spinoff/latest/spinoff/).
 
 
 ## 📖 Documentation
