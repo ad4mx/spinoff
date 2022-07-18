@@ -29,7 +29,7 @@ let mut spinner = Spinner::new(Spinners::Dots, "Loading...", Some(Color::Red));
 sleep(Duration::from_secs(3));
 spinner.update(Spinners::Dots2, "Loading...", None);
 sleep(Duration::from_secs(3));
-spinner.stop_and_persist("👨‍💻", "Done!");
+spinner.stop()
 ```
 
 ### Stop a spinner and persist a symbol and message
