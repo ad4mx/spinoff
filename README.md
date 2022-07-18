@@ -14,7 +14,7 @@
 ## Usage
 
 ```rust
-use spinoff::{Spinner, Spinners};
+use spinoff::{Spinner, Spinners, Color};
 use std::thread::sleep;
 use std::time::Duration;
 
@@ -26,7 +26,7 @@ spinner.success("Done!");
 ### Update a spinner
 
 ```rust
-use spinoff::{Spinner, Spinners};
+use spinoff::{Spinner, Spinners, Color};
 use std::thread::sleep;
 use std::time::Duration;
 
