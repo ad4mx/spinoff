@@ -22,6 +22,8 @@ pub fn init_color(color: Option<Color>, spinner: String) -> Paint<String> {
         Some(Color::Yellow) => Paint::yellow(spinner),
         Some(Color::Cyan) => Paint::cyan(spinner),
         Some(Color::White) => Paint::new(spinner),
+        Some(Color::Black) => Paint::black(spinner),
+        Some(Color::Magenta) => Paint::magenta(spinner),
         None => Paint::new(spinner),
     }
 }

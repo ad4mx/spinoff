@@ -1,4 +1,4 @@
-use crate::{spinner_enum::Spinners, StringLiteral};
+use crate::spinner_enum::Spinners;
 use maplit::{self, hashmap};
 use once_cell::sync::Lazy;
 use std::collections::HashMap;
@@ -7,7 +7,7 @@ use std::collections::HashMap;
 /// Frames is a Vec of &str, each &str is a frame of the spinner.
 /// Interval is the number of milliseconds to wait before moving to the next frame.
 pub struct SpinnerFrames {
-    pub frames: Vec<StringLiteral>,
+    pub frames: Vec<&'static str>,
     pub interval: u16,
 }
 
@@ -807,40 +807,40 @@ pub static SPINNER_FRAMES: Lazy<HashMap<Spinners, SpinnerFrames>> = Lazy::new(||
             "(●     )"
           ], interval: 80},
           Spinners::Smiley => SpinnerFrames {frames: vec![
-            "😄 ",
-            "😝 "
+            "😄",
+            "😝"
           ], interval: 200},
           Spinners::Monkey => SpinnerFrames {frames: vec![
-            "🙈 ",
-            "🙈 ",
-            "🙉 ",
-            "🙊 "
+            "🙈",
+            "🙈",
+            "🙉",
+            "🙊"
           ], interval: 300},
           Spinners::Hearts => SpinnerFrames {frames: vec![
-            "💛 ",
-            "💙 ",
-            "💜 ",
-            "💚 ",
-            "❤️ "
+            "💛",
+            "💙",
+            "💜",
+            "💚",
+            "❤️"
           ], interval: 100},
           Spinners::Clock => SpinnerFrames {frames: vec![
-            "🕛 ",
-            "🕐 ",
-            "🕑 ",
-            "🕒 ",
-            "🕓 ",
-            "🕔 ",
-            "🕕 ",
-            "🕖 ",
-            "🕗 ",
-            "🕘 ",
-            "🕙 ",
-            "🕚 "
+            "🕛",
+            "🕐",
+            "🕑",
+            "🕒",
+            "🕓",
+            "🕔",
+            "🕕",
+            "🕖",
+            "🕗",
+            "🕘",
+            "🕙",
+            "🕚"
           ], interval: 100},
           Spinners::Earth => SpinnerFrames {frames: vec![
-            "🌍 ",
-            "🌎 ",
-            "🌏 "
+            "🌍",
+            "🌎",
+            "🌏"
           ], interval: 180},
           Spinners::Material => SpinnerFrames {frames: vec![
             "█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁",
@@ -937,18 +937,18 @@ pub static SPINNER_FRAMES: Lazy<HashMap<Spinners, SpinnerFrames>> = Lazy::new(||
             "▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁"
           ], interval: 17},
           Spinners::Moon => SpinnerFrames {frames: vec![
-            "🌑 ",
-            "🌒 ",
-            "🌓 ",
-            "🌔 ",
-            "🌕 ",
-            "🌖 ",
-            "🌗 ",
-            "🌘 "
+            "🌑",
+            "🌒",
+            "🌓",
+            "🌔",
+            "🌕",
+            "🌖",
+            "🌗",
+            "🌘"
           ], interval: 80},
           Spinners::Runner => SpinnerFrames {frames: vec![
-            "🚶 ",
-            "🏃 "
+            "🚶",
+            "🏃"
           ], interval: 140},
           Spinners::Pong => SpinnerFrames {frames: vec![
             "▐⠂       ▌",
@@ -1017,29 +1017,29 @@ pub static SPINNER_FRAMES: Lazy<HashMap<Spinners, SpinnerFrames>> = Lazy::new(||
             "b"
           ], interval: 100},
           Spinners::Weather => SpinnerFrames {frames: vec![
-            "☀️ ",
-            "☀️ ",
-            "☀️ ",
-            "🌤 ",
-            "⛅️ ",
-            "🌥 ",
-            "☁️ ",
-            "🌧 ",
-            "🌨 ",
-            "🌧 ",
-            "🌨 ",
-            "🌧 ",
-            "🌨 ",
-            "⛈ ",
-            "🌨 ",
-            "🌧 ",
-            "🌨 ",
-            "☁️ ",
-            "🌥 ",
-            "⛅️ ",
-            "🌤 ",
-            "☀️ ",
-            "☀️ "
+            "☀️",
+            "☀️",
+            "☀️",
+            "🌤",
+            "⛅️",
+            "🌥",
+            "☁️",
+            "🌧",
+            "🌨",
+            "🌧",
+            "🌨",
+            "🌧",
+            "🌨",
+            "⛈",
+            "🌨",
+            "🌧",
+            "🌨",
+            "☁️",
+            "🌥",
+            "⛅️",
+            "🌤",
+            "☀️",
+            "☀️"
           ], interval: 100},
           Spinners::Christmas => SpinnerFrames {frames: vec![
             "🌲",
@@ -1083,97 +1083,97 @@ pub static SPINNER_FRAMES: Lazy<HashMap<Spinners, SpinnerFrames>> = Lazy::new(||
             "ββββββρ"
           ], interval: 80},
           Spinners::FingerDance => SpinnerFrames {frames: vec![
-            "🤘 ",
-            "🤟 ",
-            "🖖 ",
-            "✋ ",
-            "🤚 ",
-            "👆 "
+            "🤘",
+            "🤟",
+            "🖖",
+            "✋",
+            "🤚",
+            "👆"
           ], interval: 160},
           Spinners::FistBump => SpinnerFrames {frames: vec![
-            "🤜　　　　🤛 ",
-            "🤜　　　　🤛 ",
-            "🤜　　　　🤛 ",
-            "　🤜　　🤛　 ",
-            "　　🤜🤛　　 ",
-            "　🤜✨🤛　　 ",
-            "🤜　✨　🤛　 "
+            "🤜　　　　🤛",
+            "🤜　　　　🤛",
+            "🤜　　　　🤛",
+            "　🤜　　🤛　",
+            "　　🤜🤛　　",
+            "　🤜✨🤛　 ",
+            "🤜　✨　🤛 "
           ], interval: 80},
           Spinners::SoccerHeader => SpinnerFrames {frames: vec![
-            " 🧑⚽️       🧑 ",
-            "🧑  ⚽️      🧑 ",
-            "🧑   ⚽️     🧑 ",
-            "🧑    ⚽️    🧑 ",
-            "🧑     ⚽️   🧑 ",
-            "🧑      ⚽️  🧑 ",
-            "🧑       ⚽️🧑  ",
-            "🧑      ⚽️  🧑 ",
-            "🧑     ⚽️   🧑 ",
-            "🧑    ⚽️    🧑 ",
-            "🧑   ⚽️     🧑 ",
-            "🧑  ⚽️      🧑 "
+            " 🧑⚽️       🧑",
+            "🧑  ⚽️      🧑",
+            "🧑   ⚽️     🧑",
+            "🧑    ⚽️    🧑",
+            "🧑     ⚽️   🧑",
+            "🧑      ⚽️  🧑",
+            "🧑       ⚽️🧑 ",
+            "🧑      ⚽️  🧑",
+            "🧑     ⚽️   🧑",
+            "🧑    ⚽️    🧑",
+            "🧑   ⚽️     🧑",
+            "🧑  ⚽️      🧑"
           ], interval: 80},
           Spinners::Mindblown => SpinnerFrames {frames: vec![
-            "😐 ",
-            "😐 ",
-            "😮 ",
-            "😮 ",
-            "😦 ",
-            "😦 ",
-            "😧 ",
-            "😧 ",
-            "🤯 ",
-            "💥 ",
-            "✨ ",
-            "　 ",
-            "　 ",
-            "　 "
+            "😐",
+            "😐",
+            "😮",
+            "😮",
+            "😦",
+            "😦",
+            "😧",
+            "😧",
+            "🤯",
+            "💥",
+            "✨",
+            "　",
+            "　",
+            "　"
           ], interval: 160},
           Spinners::Speaker => SpinnerFrames {frames: vec![
-            "🔈 ",
-            "🔉 ",
-            "🔊 ",
-            "🔉 "
+            "🔈",
+            "🔉",
+            "🔊",
+            "🔉"
           ], interval: 160},
           Spinners::OrangePulse => SpinnerFrames {frames: vec![
-            "🔸 ",
-            "🔶 ",
-            "🟠 ",
-            "🟠 ",
-            "🔶 "
+            "🔸",
+            "🔶",
+            "🟠",
+            "🟠",
+            "🔶"
           ], interval: 100},
           Spinners::BluePulse => SpinnerFrames {frames: vec![
-            "🔹 ",
-            "🔷 ",
-            "🔵 ",
-            "🔵 ",
-            "🔷 "
+            "🔹",
+            "🔷",
+            "🔵",
+            "🔵",
+            "🔷"
           ], interval: 100},
           Spinners::OrangeBluePulse => SpinnerFrames {frames: vec![
-            "🔸 ",
-            "🔶 ",
-            "🟠 ",
-            "🟠 ",
-            "🔶 ",
-            "🔹 ",
-            "🔷 ",
-            "🔵 ",
-            "🔵 ",
-            "🔷 "
+            "🔸",
+            "🔶",
+            "🟠",
+            "🟠",
+            "🔶",
+            "🔹",
+            "🔷",
+            "🔵",
+            "🔵",
+            "🔷"
           ], interval: 100},
           Spinners::TimeTravel => SpinnerFrames {frames: vec![
-            "🕛 ",
-            "🕚 ",
-            "🕙 ",
-            "🕘 ",
-            "🕗 ",
-            "🕖 ",
-            "🕕 ",
-            "🕔 ",
-            "🕓 ",
-            "🕒 ",
-            "🕑 ",
-            "🕐 "
+            "🕛",
+            "🕚",
+            "🕙",
+            "🕘",
+            "🕗",
+            "🕖",
+            "🕕",
+            "🕔",
+            "🕓",
+            "🕒",
+            "🕑",
+            "🕐"
           ], interval: 100},
           Spinners::Aesthetic => SpinnerFrames {frames: vec![
             "▰▱▱▱▱▱▱",

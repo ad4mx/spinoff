@@ -59,6 +59,8 @@ pub enum Color {
     Yellow,
     Cyan,
     White,
+    Black,
+    Magenta,
 }
 
 impl Spinner {
@@ -77,7 +79,7 @@ impl Spinner {
     /// # use std::thread::sleep;
     /// # use std::time::Duration;
     /// #
-    /// let sp = Spinner::new(Spinners::Dots, "Hello", Some(Color::Blue));
+    /// let sp = Spinner::new(Spinners::Dots, "Hello World!", Some(Color::Blue));
     /// sleep(Duration::from_millis(800));
     /// sp.clear();
     /// ```
@@ -107,12 +109,12 @@ impl Spinner {
                     .iter()
                     .cycle()
                     .take_while(|_| still_spinning.load(std::sync::atomic::Ordering::Relaxed));
-
+                // Dynamically delete the last line of the terminal depending on the length of the message + spinner.
                 let mut last_length = 0;
                 for frame in frames {
-                    // This is dependant on the stdout attached is a terminal that respects \r
                     let mut stdout_lock = stdout.lock();
                     let frame_str = format!(" {} {}", init_color(color, frame.to_string()), msg);
+                    // Get us back to the start of the line.
                     delete_last_line(last_length);
                     last_length = frame_str.bytes().len();
                     write!(stdout_lock, "{}", frame_str).unwrap();
@@ -144,7 +146,7 @@ impl Spinner {
     /// # use std::thread::sleep;
     /// # use std::time::Duration;
     /// #
-    /// let sp = Spinner::new(Spinners::Dots, "Hello", None);
+    /// let sp = Spinner::new(Spinners::Dots9, "Spinning...", None);
     /// sleep(Duration::from_millis(800));
     /// sp.stop();
     /// ```
@@ -168,7 +170,7 @@ impl Spinner {
     /// # use std::thread::sleep;
     /// # use std::time::Duration;
     /// #
-    /// let sp = Spinner::new(Spinners::Dots, "Hello", None);
+    /// let sp = Spinner::new(Spinners::Dots2, "Hello", None);
     /// sleep(Duration::from_millis(800));
     /// sp.stop_with_message("Bye");
     /// ```
@@ -188,7 +190,7 @@ impl Spinner {
     /// # use std::thread::sleep;
     /// # use std::time::Duration;
     /// #
-    /// let sp = Spinner::new(Spinners::Dots, "Hello", None);
+    /// let sp = Spinner::new(Spinners::Mindblown, "Guess what's coming...", None);
     /// sleep(Duration::from_millis(800));
     /// sp.stop_and_persist("🍕", "Pizza!");
     /// ```
@@ -207,7 +209,7 @@ impl Spinner {
     /// # use std::thread::sleep;
     /// # use std::time::Duration;
     /// #    
-    /// let sp = Spinner::new(Spinners::Dots, "Hello", None);
+    /// let sp = Spinner::new(Spinners::Aesthetic, "Trying to load information...", None);
     /// sleep(Duration::from_millis(800));
     /// sp.success("Success!");
     /// ```
@@ -230,9 +232,9 @@ impl Spinner {
     /// # use std::thread::sleep;
     /// # use std::time::Duration;
     /// #   
-    /// let sp = Spinner::new(Spinners::Dots, "Hello", None);
+    /// let sp = Spinner::new(Spinners::BouncingBar, "Executing code...", None);
     /// sleep(Duration::from_millis(800));
-    /// sp.fail("Failed!");
+    /// sp.fail("Code failed to compile!");
     /// ```
     ///
     pub fn fail(mut self, msg: StringLiteral) {
@@ -249,9 +251,9 @@ impl Spinner {
     /// # use std::thread::sleep;
     /// # use std::time::Duration;
     /// #   
-    /// let sp = Spinner::new(Spinners::Dots, "Hello", None);
+    /// let sp = Spinner::new(Spinners::Material, "Measuring network speed...", None);
     /// sleep(Duration::from_millis(800));
-    /// sp.warn("Look out!");
+    /// sp.warn("You might want to check your internet connection...");
     /// ```
     ///
     pub fn warn(mut self, msg: StringLiteral) {
@@ -275,7 +277,7 @@ impl Spinner {
     /// let mut sp = Spinner::new(Spinners::Dots, "Hello", None);
     ///
     /// sleep(Duration::from_millis(800));
-    /// sp.update(Spinners::Dots2, "Goodbye", None);
+    /// sp.update(Spinners::Dots2, "World", None);
     /// sleep(Duration::from_millis(800));
     ///
     /// sp.stop();
@@ -298,7 +300,7 @@ impl Spinner {
     /// # use std::thread::sleep;
     /// # use std::time::Duration;
     /// #
-    /// let mut sp = Spinner::new(Spinners::Dots, "Hello", None);
+    /// let mut sp = Spinner::new(Spinners::Grenade, "Clearing...", None);
     /// sleep(Duration::from_millis(800));
     /// sp.clear();
     /// ```
