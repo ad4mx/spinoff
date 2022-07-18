@@ -6,7 +6,7 @@
 
 <p>
 	<br>
-	<img width="800" src="index.gif">
+	<img width="800" src="assets/index.gif">
 	<br>
 	<br>
 </p>
