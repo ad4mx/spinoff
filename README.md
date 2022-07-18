@@ -11,7 +11,7 @@
 	<br>
 </p>
 
-## Usage
+## ⚡ Usage
 
 ```rust
 use spinoff::{Spinner, Spinners, Color};
@@ -38,12 +38,12 @@ spinner.stop_and_persist("👨‍💻", "Done!");
 ```
 
 
-## Documentation
+## 📖 Documentation
 
-* All documentation can be found on the [Docs.rs page](https://docs.rs/spinoff/latest/spinoff/).
+* All relevant documentation can be found on the [Docs.rs page](https://docs.rs/spinoff/latest/spinoff/).
 * If you want to see all the available `Spinner` options, check the [`Spinners`](src/utils/spinner_enum.rs) enum.
 
-## Examples
+## 🔨 Examples
 
 To run some of the included examples, use: 
 ```bash	
@@ -54,10 +54,11 @@ cargo run --example all_spinners
 cargo run --example simple
 ```
 
-## Contributing
+## 🚧 Contributing
 
-Any contributions to this crate are highly appreciated. If you have any ideas/suggestions/bug fixes, please open an issue or pull request.
+Any contributions to this crate are highly appreciated. If you have any ideas/suggestions/bug fixes, please open an issue or a pull request.
+If you like the project, [star this project on GitHub.](https://github.com/ad4mx/spinoff)
 
-## License
+## 📑 License
 
 This crate is licensed under the [MIT license](LICENSE).
