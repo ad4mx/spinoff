@@ -4,7 +4,6 @@ use yansi::Paint;
 
 pub fn delete_last_line(clear_length: usize) {
     let mut stdout_lock = stdout().lock();
-
     write!(stdout_lock, "\r").unwrap();
     for _ in 0..clear_length {
         write!(stdout_lock, " ").unwrap();

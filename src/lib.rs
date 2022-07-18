@@ -155,7 +155,6 @@ impl Spinner {
     ///
     pub fn stop(mut self) {
         self.stop_spinner_thread();
-
         // print message
         println!("{}", self.msg);
     }
@@ -176,7 +175,6 @@ impl Spinner {
     ///
     pub fn stop_with_message(mut self, msg: StringLiteral) {
         self.stop_spinner_thread();
-
         // put the message over the spinner
         println!("{}", msg);
     }
@@ -316,6 +314,7 @@ impl Spinner {
             .store(false, std::sync::atomic::Ordering::Relaxed);
 
         // Wait for the thread to actually stop
+        // Also deletes the last line of the terminal after stopped
         self.thread_handle
             .take()
             .expect("Stopping the spinner thread should only happen once.")
