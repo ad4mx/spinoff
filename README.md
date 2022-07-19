@@ -4,7 +4,7 @@
 [![Version](https://img.shields.io/crates/v/spinoff.svg)](https://crates.io/crates/spinoff) [![Downloads](https://img.shields.io/crates/d/spinoff)](https://crates.io/crates/spinoff) [![Docs](https://img.shields.io/docsrs/spinoff)](https://docs.rs/spinoff/latest/spinoff) [![License](https://img.shields.io/crates/l/spinoff)](https://crates.io/crates/spinoff) ![Actions](https://img.shields.io/github/workflow/status/ad4mx/spinoff/Rust)
 
 
-![til](assets/example.gif)
+![](assets/example.gif)
 
 ## ⚡ Usage
 
@@ -50,7 +50,7 @@ Other examples can be found in the [documentation](https://docs.rs/spinoff/lates
 ## 📖 Documentation
 
 * All relevant documentation can be found on the [Docs.rs page](https://docs.rs/spinoff/latest/spinoff/).
-* If you want to see all the available `Spinner` options, check the [`Spinners`](src/spinner_enum.rs) enum.
+* If you want to see all the available `Spinner` options, check the [`Spinners`](src/utils/spinner_enum.rs) enum.
 
 ## 🔨 Examples
 

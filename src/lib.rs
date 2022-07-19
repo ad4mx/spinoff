@@ -228,11 +228,11 @@ impl Spinner {
     /// # Example
     ///
     /// ```
-    /// # use spinoff::{Spinners, Spinner};
+    /// # use spinoff::{Spinners, Spinner, Color};
     /// # use std::thread::sleep;
     /// # use std::time::Duration;
     /// #   
-    /// let sp = Spinner::new(Spinners::BouncingBar, "Executing code...", None);
+    /// let sp = Spinner::new(Spinners::BouncingBar, "Executing code...", Some(Color::Green));
     /// sleep(Duration::from_millis(800));
     /// sp.fail("Code failed to compile!");
     /// ```
