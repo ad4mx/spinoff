@@ -223,7 +223,7 @@ impl Spinner {
         );
     }
 
-    /// Deletes the last line of the terminal and prints a failure symbol with a message.
+    /// Deletes the last line of the terminal and prints a failure symbol with a message to stderr.
     ///     
     /// # Example
     ///
@@ -239,7 +239,7 @@ impl Spinner {
     ///
     pub fn fail(mut self, msg: StringLiteral) {
         self.stop_spinner_thread();
-        println!("{} {}", init_color(Some(Color::Red), "✖".to_string()), &msg);
+        eprintln!("{} {}", init_color(Some(Color::Red), "✖".to_string()), &msg);
     }
 
     /// Deletes the last line of the terminal and prints a warning symbol with a message.
