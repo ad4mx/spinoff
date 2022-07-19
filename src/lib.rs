@@ -79,7 +79,7 @@ impl Spinner {
     /// # use std::thread::sleep;
     /// # use std::time::Duration;
     /// #
-    /// let sp = Spinner::new(Spinners::Dots, "Hello World!", Some(Color::Blue));
+    /// let sp = Spinner::new(Spinners::Dots, "Hello World!", Color::Blue);
     /// sleep(Duration::from_millis(800));
     /// sp.clear();
     /// ```
@@ -88,13 +88,15 @@ impl Spinner {
     ///
     /// * The spinner immediately starts spinning upon creation.
     ///
-    pub fn new<T>(spinner_type: Spinners, msg: T, color: Option<Color>) -> Self
+    pub fn new<T, U>(spinner_type: Spinners, msg: T, color: U) -> Self
     where
         T: Into<Cow<'static, str>>,
+        U: Into<Option<Color>>,
     {
         let still_spinning = Arc::new(AtomicBool::new(true));
-        // Gain ownership of the message for the thread to use
+        // Gain ownership of the message and color for the thread to use
         let msg = msg.into();
+        let color = color.into();
         // We use atomic bools to make the thread stop itself when the `spinner.stop()` method is called.
         let handle = thread::spawn({
             // Clone the atomic bool so that we can use it in the thread and return the original one later.
@@ -232,7 +234,7 @@ impl Spinner {
     /// # use std::thread::sleep;
     /// # use std::time::Duration;
     /// #   
-    /// let sp = Spinner::new(Spinners::BouncingBar, "Executing code...", Some(Color::Green));
+    /// let sp = Spinner::new(Spinners::BouncingBar, "Executing code...", Color::Green);
     /// sleep(Duration::from_millis(800));
     /// sp.fail("Code failed to compile!");
     /// ```
@@ -283,9 +285,10 @@ impl Spinner {
     /// sp.stop();
     /// ```
     ///
-    pub fn update<T>(&mut self, spinner: Spinners, msg: T, color: Option<Color>)
+    pub fn update<T, U>(&mut self, spinner: Spinners, msg: T, color: U)
     where
         T: Into<Cow<'static, str>>,
+        U: Into<Option<Color>>,
     {
         self.stop_spinner_thread();
         let _ = std::mem::replace(self, Self::new(spinner, msg, color));

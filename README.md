@@ -13,7 +13,7 @@ use spinoff::{Spinner, Spinners, Color};
 use std::thread::sleep;
 use std::time::Duration;
 
-let spinner = Spinner::new(Spinners::Dots, "Loading...", Some(Color::Blue)); 
+let spinner = Spinner::new(Spinners::Dots, "Loading...", Color::Blue); 
 sleep(Duration::from_secs(3));
 spinner.success("Done!");
 ```
@@ -25,7 +25,7 @@ use spinoff::{Spinner, Spinners, Color};
 use std::thread::sleep;
 use std::time::Duration;
 
-let mut spinner = Spinner::new(Spinners::Dots, "Loading...", Some(Color::Red)); 
+let mut spinner = Spinner::new(Spinners::Dots, "Loading...", Color::Red); 
 sleep(Duration::from_secs(3));
 spinner.update(Spinners::Dots2, "Loading...", None);
 sleep(Duration::from_secs(3));
@@ -39,7 +39,7 @@ use spinoff::{Spinner, Spinners, Color};
 use std::thread::sleep;
 use std::time::Duration;
 
-let mut spinner = Spinner::new(Spinners::Dots, "Loading...", Some(Color::Green));
+let mut spinner = Spinner::new(Spinners::Dots, "Loading...", Color::Green);
 sleep(Duration::from_secs(3));
 spinner.stop_and_persist("📜", "Task done.");
 ```
