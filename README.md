@@ -50,7 +50,7 @@ Other examples can be found in the [documentation](https://docs.rs/spinoff/lates
 ## 📖 Documentation
 
 * All relevant documentation can be found on the [Docs.rs page](https://docs.rs/spinoff/latest/spinoff/).
-* If you want to see all the available `Spinner` options, check the [`Spinners`](src/utils/spinner_enum.rs) enum.
+* If you want to see all the available `Spinner` options, check the [`Spinners`](src/spinner_enum.rs) enum.
 
 ## 🔨 Examples
 
