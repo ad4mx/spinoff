@@ -220,7 +220,7 @@ impl Spinner {
         self.stop_spinner_thread();
         println!(
             "{} {}",
-            init_color(Some(Color::Green), "✔"),
+            init_color(Some(Color::Green), " ✔"),
             &msg
         );
     }
@@ -241,7 +241,7 @@ impl Spinner {
     ///
     pub fn fail(mut self, msg: StringLiteral) {
         self.stop_spinner_thread();
-        eprintln!("{} {}", init_color(Some(Color::Red), "✖"), &msg);
+        eprintln!("{} {}", init_color(Some(Color::Red), " ✖"), &msg);
     }
 
     /// Deletes the last line of the terminal and prints a warning symbol with a message.
@@ -262,7 +262,7 @@ impl Spinner {
         self.stop_spinner_thread();
         println!(
             "{} {}",
-            init_color(Some(Color::Yellow), "⚠"),
+            init_color(Some(Color::Yellow), " ⚠"),
             &msg
         );
     }
@@ -273,7 +273,7 @@ impl Spinner {
     /// ```
     /// # use spinoff::{Spinners, Spinner};
     /// # use std::thread::sleep;
-    /// # use std::time:Duration;
+    /// # use std::time::Duration;
     ///  
     /// let sp = Spinner::new(Spinners::Dots9, "Loading info message...", None);
     /// sleep(Duration::from_millis(800));
@@ -284,7 +284,7 @@ impl Spinner {
         self.stop_spinner_thread();
         println!(
             "{} {}",
-            init_color(Some(Color::Blue), "ℹ"),
+            init_color(Some(Color::Blue), " ℹ"),
             &msg
         );
     }

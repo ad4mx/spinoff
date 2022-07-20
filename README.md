@@ -1,10 +1,17 @@
 # spinoff
-`spinoff` is a simple to use library for displaying spinners in the terminal, with plenty of features and options.
+> simple library for displaying spinners in the terminal
 
 [![Version](https://img.shields.io/crates/v/spinoff.svg)](https://crates.io/crates/spinoff) [![Downloads](https://img.shields.io/crates/d/spinoff)](https://crates.io/crates/spinoff) [![Docs](https://img.shields.io/docsrs/spinoff)](https://docs.rs/spinoff/latest/spinoff) [![License](https://img.shields.io/crates/l/spinoff)](https://crates.io/crates/spinoff) ![Actions](https://img.shields.io/github/workflow/status/ad4mx/spinoff/Rust)
 
 
 ![](assets/index.gif)
+## 🔨 Install
+Add as a dependency to your `Cargo.toml`:
+
+```toml
+[dependencies]
+spinoff = "0.4.0"
+```	
 
 ## ⚡ Usage
 
@@ -52,7 +59,7 @@ Other examples can be found in the [documentation](https://docs.rs/spinoff/lates
 * All relevant documentation can be found on the [Docs.rs page](https://docs.rs/spinoff/latest/spinoff/).
 * If you want to see all the available `Spinner` options, check the [`Spinners`](src/spinner_enum.rs) enum.
 
-## 🔨 Examples
+## ⚙ Examples
 
 To run some of the included examples, use: 
 ```bash	
