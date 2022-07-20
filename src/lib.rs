@@ -115,7 +115,7 @@ impl Spinner {
                 let mut last_length = 0;
                 for frame in frames {
                     let mut stdout_lock = stdout.lock();
-                    let frame_str = format!(" {} {}", init_color(color, frame.to_string()), msg);
+                    let frame_str = format!(" {} {}", init_color(color, frame), msg);
                     // Get us back to the start of the line.
                     delete_last_line(last_length);
                     last_length = frame_str.bytes().len();
@@ -220,7 +220,7 @@ impl Spinner {
         self.stop_spinner_thread();
         println!(
             "{} {}",
-            init_color(Some(Color::Green), "✔".to_string()),
+            init_color(Some(Color::Green), "✔"),
             &msg
         );
     }
@@ -241,7 +241,7 @@ impl Spinner {
     ///
     pub fn fail(mut self, msg: StringLiteral) {
         self.stop_spinner_thread();
-        eprintln!("{} {}", init_color(Some(Color::Red), "✖".to_string()), &msg);
+        eprintln!("{} {}", init_color(Some(Color::Red), "✖"), &msg);
     }
 
     /// Deletes the last line of the terminal and prints a warning symbol with a message.
@@ -262,7 +262,29 @@ impl Spinner {
         self.stop_spinner_thread();
         println!(
             "{} {}",
-            init_color(Some(Color::Yellow), "⚠".to_string()),
+            init_color(Some(Color::Yellow), "⚠"),
+            &msg
+        );
+    }
+    /// Deletes the last line of the terminal and prints an info symbol with a message.
+    /// 
+    /// # Example
+    /// 
+    /// ```
+    /// # use spinoff::{Spinners, Spinner};
+    /// # use std::thread::sleep;
+    /// # use std::time:Duration;
+    ///  
+    /// let sp = Spinner::new(Spinners::Dots9, "Loading info message...", None);
+    /// sleep(Duration::from_millis(800));
+    /// sp.info("This is an info message!");    
+    /// ```
+    /// 
+    pub fn info(mut self, msg: StringLiteral) {
+        self.stop_spinner_thread();
+        println!(
+            "{} {}",
+            init_color(Some(Color::Blue), "ℹ"),
             &msg
         );
     }

@@ -1,4 +1,4 @@
-use crate::Color;
+use crate::{Color, StringLiteral};
 use std::io::{stdout, Write};
 use yansi::Paint;
 
@@ -14,7 +14,7 @@ pub fn delete_last_line(clear_length: usize) {
 }
 
 /// Accepts a color option and spinner, returns a Paint<String> object (e.g. `Paint::green(spinner)`)
-pub fn init_color(color: Option<Color>, spinner: String) -> Paint<String> {
+pub fn init_color(color: Option<Color>, spinner: StringLiteral) -> Paint<StringLiteral> {
     match color {
         Some(Color::Blue) => Paint::blue(spinner),
         Some(Color::Green) => Paint::green(spinner),
