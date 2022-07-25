@@ -26,6 +26,7 @@
 
 use std::borrow::Cow;
 use std::io::Write;
+use std::sync::Mutex;
 use std::sync::{atomic::AtomicBool, Arc};
 use std::thread::{self, JoinHandle};
 
@@ -48,7 +49,7 @@ pub struct Spinner {
     /// This struct has an `Arc<AtomicBool>` field, which is later used in the `stop` type methods to stop the thread printing the spinner.
     still_spinning: Arc<AtomicBool>,
     msg: Cow<'static, str>,
-    stream: Stream,
+    stream: Arc<Mutex<Stream>>,
 }
 
 /// Color for spinner.
@@ -131,7 +132,8 @@ impl Spinner {
         // Gain ownership of the message and color for the thread to use
         let msg = msg.into();
         let color = color.into();
-        let mut stream = stream.get_stream();
+        let mut stream = Arc::new(Mutex::new(stream.get_stream()));
+        let stream_clone = stream.clone();
         // We use atomic bools to make the thread stop itself when the `spinner.stop()` method is called.
         let handle = thread::spawn({
             // Clone the atomic bool so that we can use it in the thread and return the original one later.
@@ -147,19 +149,20 @@ impl Spinner {
                     .take_while(|_| still_spinning.load(std::sync::atomic::Ordering::Relaxed));
                 // Dynamically delete the last line of the terminal depending on the length of the message + spinner.
                 let mut last_length = 0;
+                let stream_lock = stream_clone.lock().unwrap();
                 for frame in frames {
                     let frame_str = format!(" {} {}", init_color(color, frame), msg);
                     // Get us back to the start of the line.
-                    delete_last_line(last_length, &mut stream).unwrap();
+                    delete_last_line(last_length, &mut stream_lock).unwrap();
                     last_length = frame_str.bytes().len();
-                    write!(stream, "{}", frame_str).unwrap();
-                    stream.flush().unwrap();
+                    write!(stream_lock, "{}", frame_str).unwrap();
+                    stream_lock.flush().unwrap();
 
                     thread::sleep(std::time::Duration::from_millis(
                         spinner_data.interval as u64,
                     ));
                 }
-                delete_last_line(last_length, &mut stream).unwrap();
+                delete_last_line(last_length, &mut stream_lock).unwrap();
             }
         });
 
@@ -326,6 +329,16 @@ impl Spinner {
     ///
     pub fn clear(mut self) {
         self.stop_spinner_thread();
+    }
+
+    pub fn update<T, U>(&mut self, spinner: Spinners, msg: T, color: U)
+    where 
+        T: Into<Cow<'static, str>>, 
+        U: Into<Option<Color>>
+    {
+        let stream_lock = self.stream.lock().unwrap();
+        let data = &*stream_lock;
+        let _ = std::mem::replace(self, Self::new_with_stream(spinner, msg, color, Streams::Custom(data)));
     }
 
     /// Stop the spinner thread and wait for it.
