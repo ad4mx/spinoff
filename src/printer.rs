@@ -1,8 +1,7 @@
-use crate::{Color, Stream, StringLiteral};
-use std::io::Write;
+use crate::{Color, Streams, StringLiteral};
 use yansi::Paint;
 
-pub fn delete_last_line(clear_length: usize, stream: &mut Stream) -> Result<(), std::io::Error> {
+pub fn delete_last_line(clear_length: usize, stream: Streams) -> Result<(), std::io::Error> {
     write!(stream, "\r")?;
     for _ in 0..clear_length {
         write!(stream, " ")?;
