@@ -32,7 +32,7 @@ use spinoff::{Spinner, Spinners, Color};
 use std::thread::sleep;
 use std::time::Duration;
 
-let mut spinner = Spinner::new(Spinners::Dots, "Loading...", Color::Red); 
+let mut spinner = Spinner::new(Spinners::Aesthetic, "Loading...", Color::Red); 
 sleep(Duration::from_secs(3));
 spinner.update(Spinners::Dots2, "Loading...", None);
 sleep(Duration::from_secs(3));
@@ -46,7 +46,19 @@ use spinoff::{Spinner, Spinners, Color};
 use std::thread::sleep;
 use std::time::Duration;
 
-let mut spinner = Spinner::new(Spinners::Dots, "Loading...", Color::Green);
+let spinner = Spinner::new(Spinners::Arc, "Loading...", Color::Green);
+sleep(Duration::from_secs(3));
+spinner.stop_and_persist("📜", "Task done.");
+```
+
+### Specify an output stream
+
+```rust
+use spinoff::{Spinner, Spinners, Color, Streams};
+use std::thread::sleep;
+use std::time::Duration;
+
+let spinner = Spinner::new_with_stream(Spinners::Line, "Loading...", Color::Yellow, Streams::Stderr);
 sleep(Duration::from_secs(3));
 spinner.stop_and_persist("📜", "Task done.");
 ```

@@ -346,7 +346,7 @@ impl Spinner {
     /// # use std::thread::sleep;
     /// # use std::time::Duration;
     /// #
-    /// let mut sp = Spinner::new(Spinners::Grenade, "Clearing...", None);
+    /// let sp = Spinner::new(Spinners::Grenade, "Clearing...", None);
     /// sleep(Duration::from_millis(800));
     /// sp.clear();
     /// ```
