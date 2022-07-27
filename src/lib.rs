@@ -25,7 +25,7 @@
 //! Don't want any of that? Simply pass `None` to the `color` option.
 
 use std::borrow::Cow;
-use std::io::{stdout, Write};
+use std::io::Write;
 use std::sync::{atomic::AtomicBool, Arc};
 use std::thread::{self, JoinHandle};
 
@@ -49,6 +49,7 @@ pub struct Spinner {
     /// This struct has an `Arc<AtomicBool>` field, which is later used in the `stop` type methods to stop the thread printing the spinner.
     still_spinning: Arc<AtomicBool>,
     msg: Cow<'static, str>,
+    stream: Streams
 }
 
 /// Color for spinner.
@@ -138,7 +139,6 @@ impl Spinner {
             let msg = msg.clone();
             move || {
                 let spinner_data = SPINNER_FRAMES.get(&spinner_type).unwrap();
-                let stdout = stdout();
                 // Iterate over all the frames of the spinner while the atomic bool is true.
                 let frames = spinner_data
                     .frames
@@ -148,14 +148,12 @@ impl Spinner {
                 // Dynamically delete the last line of the terminal depending on the length of the message + spinner.
                 let mut last_length = 0;
                 for frame in frames {
-                    let mut stdout_lock = stdout.lock();
                     let frame_str = format!(" {} {}", init_color(color, frame), msg);
                     // Get us back to the start of the line.
                     delete_last_line(last_length, stream).unwrap();
                     last_length = frame_str.bytes().len();
-                    write!(stdout_lock, "{}", frame_str).unwrap();
-                    stdout_lock.flush().unwrap();
-                    drop(stdout_lock);
+                    write!(stream, "{}", frame_str).unwrap();
+                    stream.get_stream().flush().unwrap();
 
                     thread::sleep(std::time::Duration::from_millis(
                         spinner_data.interval as u64,
@@ -170,6 +168,7 @@ impl Spinner {
             thread_handle: Some(handle),
             still_spinning,
             msg,
+            stream,
         }
     }
 
@@ -194,7 +193,7 @@ impl Spinner {
     pub fn stop(mut self) {
         self.stop_spinner_thread();
         // print message
-        println!("{}", self.msg);
+        writeln!(self.stream, "{}", self.msg).unwrap();
     }
 
     /// Stops the spinner and prints a message on a new line.
@@ -214,7 +213,7 @@ impl Spinner {
     pub fn stop_with_message(mut self, msg: StringLiteral) {
         self.stop_spinner_thread();
         // put the message over the spinner
-        println!("{}", msg);
+        writeln!(self.stream, "{}", msg).unwrap();
     }
 
     /// Deletes the spinner and message and prints a new line with a symbol and message.
@@ -233,7 +232,7 @@ impl Spinner {
     ///
     pub fn stop_and_persist(mut self, symbol: StringLiteral, msg: StringLiteral) {
         self.stop_spinner_thread();
-        println!("{} {}", symbol, msg);
+        writeln!(self.stream, "{} {}", symbol, msg).unwrap();
     }
 
     /// Deletes the last line of the terminal and prints a success symbol with a message.
@@ -252,7 +251,7 @@ impl Spinner {
     ///
     pub fn success(mut self, msg: StringLiteral) {
         self.stop_spinner_thread();
-        println!("{} {}", init_color(Some(Color::Green), " ✔"), &msg);
+        writeln!(self.stream, "{} {}", init_color(Some(Color::Green), "✓"), msg).unwrap();
     }
 
     /// Deletes the last line of the terminal and prints a failure symbol with a message to stderr.
@@ -271,7 +270,7 @@ impl Spinner {
     ///
     pub fn fail(mut self, msg: StringLiteral) {
         self.stop_spinner_thread();
-        eprintln!("{} {}", init_color(Some(Color::Red), " ✖"), &msg);
+        writeln!(self.stream, "{} {}", init_color(Some(Color::Red), "✗"), msg).unwrap();
     }
 
     /// Deletes the last line of the terminal and prints a warning symbol with a message.
@@ -290,7 +289,7 @@ impl Spinner {
     ///
     pub fn warn(mut self, msg: StringLiteral) {
         self.stop_spinner_thread();
-        println!("{} {}", init_color(Some(Color::Yellow), " ⚠"), &msg);
+        writeln!(self.stream, "{} {}", init_color(Some(Color::Yellow), "⚠"), msg).unwrap();
     }
     /// Deletes the last line of the terminal and prints an info symbol with a message.
     ///
@@ -308,7 +307,7 @@ impl Spinner {
     ///
     pub fn info(mut self, msg: StringLiteral) {
         self.stop_spinner_thread();
-        println!("{} {}", init_color(Some(Color::Blue), " ℹ"), &msg);
+        writeln!(self.stream, "{} {}", init_color(Some(Color::Blue), "ℹ"), msg).unwrap();
     }
 
     /// Deletes the last line of the terminal and prints a new spinner.
@@ -335,10 +334,7 @@ impl Spinner {
         U: Into<Option<Color>>,
     {
         self.stop_spinner_thread();
-        let _ = std::mem::replace(
-            self,
-            Self::new_with_stream(spinner, msg, color, Streams::default()),
-        );
+        let _ = std::mem::replace(self, Self::new_with_stream(spinner, msg, color, self.stream));
     }
 
     /// Deletes the last line of the terminal.

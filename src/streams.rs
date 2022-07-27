@@ -2,8 +2,7 @@ use std::io::{stderr, stdout, Write};
 /// Simplified type for a stream.
 /// A stream that writes to stdout.
 /// By default, `spinoff` uses Streams::Stdout.
-/// You can use `Streams::Custom(stream)` to specify a custom stream.
-#[derive(Default, Copy, Clone)]
+#[derive(Default, Copy, Clone, Debug)]
 pub enum Streams {
     #[default]
     Stdout,
@@ -18,7 +17,11 @@ impl Streams {
             Streams::Stderr => Box::new(stderr()),
         }
     }
-    pub fn write_fmt(self, fmt: impl std::fmt::Display) -> Result<(), std::io::Error> {
+    pub fn write_fmt<T>(self, fmt: T) -> Result<(), std::io::Error> 
+    where T: std::fmt::Display
+    {
         write!(self.get_stream(), "{}", fmt)
     }
+
+    
 }
