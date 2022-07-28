@@ -10,7 +10,7 @@ Add as a dependency to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-spinoff = "0.5.0"
+spinoff = "0.5.1"
 ```	
 
 ## ⚡ Usage
@@ -34,8 +34,10 @@ use std::time::Duration;
 
 let mut spinner = Spinner::new(Spinners::Aesthetic, "Loading...", Color::Red); 
 sleep(Duration::from_secs(3));
-spinner.update(Spinners::Dots2, "Loading...", None);
+spinner.update(Spinners::Dots2, "Retrying...", None);
 sleep(Duration::from_secs(3));
+spinner.update_text("Not quite done...");
+sleep(Duration::from_secs(1));
 spinner.stop()
 ```
 

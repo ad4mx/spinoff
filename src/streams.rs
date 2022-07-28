@@ -1,6 +1,5 @@
 use std::io::{stderr, stdout, Write};
 /// Simplified type for a stream.
-/// A stream that writes to stdout.
 /// By default, `spinoff` uses Streams::Stdout.
 #[derive(Default, Copy, Clone, Debug)]
 pub enum Streams {
@@ -17,11 +16,10 @@ impl Streams {
             Streams::Stderr => Box::new(stderr()),
         }
     }
-    pub fn write_fmt<T>(self, fmt: T) -> Result<(), std::io::Error> 
-    where T: std::fmt::Display
+    pub fn write_fmt<T>(self, fmt: T) -> Result<(), std::io::Error>
+    where
+        T: std::fmt::Display,
     {
         write!(self.get_stream(), "{}", fmt)
     }
-
-    
 }

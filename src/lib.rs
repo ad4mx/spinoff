@@ -21,7 +21,7 @@
 //! ### Colors
 //!
 //! You can also color your spinners without any hassle. Simply pass a color to the `color` option.
-//! There are 6 colors available: blue, green, red, yellow, cyan, white.
+//! There are 8 colors available: blue, green, red, yellow, cyan, white, magenta and black.
 //! Don't want any of that? Simply pass `None` to the `color` option.
 
 use std::borrow::Cow;
@@ -48,8 +48,10 @@ pub struct Spinner {
     thread_handle: Option<JoinHandle<()>>,
     /// This struct has an `Arc<AtomicBool>` field, which is later used in the `stop` type methods to stop the thread printing the spinner.
     still_spinning: Arc<AtomicBool>,
+    spinner_type: Spinners,
     msg: Cow<'static, str>,
-    stream: Streams
+    stream: Streams,
+    color: Option<Color>,
 }
 
 /// Color for spinner.
@@ -167,8 +169,10 @@ impl Spinner {
         Self {
             thread_handle: Some(handle),
             still_spinning,
+            spinner_type,
             msg,
             stream,
+            color,
         }
     }
 
@@ -310,7 +314,7 @@ impl Spinner {
         writeln!(self.stream, "{} {}", init_color(Some(Color::Blue), "ℹ"), msg).unwrap();
     }
 
-    /// Deletes the last line of the terminal and prints a new spinner.
+    /// Updates the spinner.
     ///
     /// # Example
     ///
@@ -335,6 +339,31 @@ impl Spinner {
     {
         self.stop_spinner_thread();
         let _ = std::mem::replace(self, Self::new_with_stream(spinner, msg, color, self.stream));
+    }
+
+    /// Update the spinner text.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// # use spinoff::*;
+    /// # use std::thread::sleep;
+    /// # use std::time::Duration;
+    /// #
+    /// let mut sp = Spinner::new(Spinners::Arc, "Loading...", Color::Magenta);
+    /// sleep(Duration::from_millis(800));
+    /// sp.update_text("Not quite finished...");
+    /// sleep(Duration::from_millis(800));
+    /// sp.update_text("Almost done...");
+    /// sleep(Duration::from_millis(800));
+    /// sp.success("Done!");
+    ///
+    pub fn update_text<T>(&mut self, msg: T)
+    where
+        T: Into<Cow<'static, str>>,
+    {
+        self.stop_spinner_thread();
+        let _ = std::mem::replace(self, Self::new_with_stream(self.spinner_type, msg, self.color, self.stream));
     }
 
     /// Deletes the last line of the terminal.
