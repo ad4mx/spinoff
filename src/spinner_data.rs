@@ -11,8 +11,8 @@ pub struct SpinnerFrames {
     pub interval: u16,
 }
 
-/// A HashMap of all the spinners from the Spinners enum and their data.
-/// The reason for using a HashMap instead of something like a JSON file is
+/// A `HashMap` of all the spinners from the Spinners enum and their data.
+/// The reason for using a `HashMap` instead of something like a JSON file is
 /// because there's no need for extra files and/or crates for parsing data.
 pub static SPINNER_FRAMES: Lazy<HashMap<Spinners, SpinnerFrames>> = Lazy::new(|| {
     hashmap! {

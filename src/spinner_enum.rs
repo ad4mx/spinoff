@@ -9,7 +9,7 @@ use strum::EnumIter;
 /// cargo run --example all_spinners
 /// ```
 ///
-/// Each variant in this enum is assigned to a HashMap holding it's frames and interval count.
+/// Each variant in this enum is assigned to a `HashMap` holding it's frames and interval count.
 ///
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, EnumIter, strum::Display)]
 pub enum Spinners {

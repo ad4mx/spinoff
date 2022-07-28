@@ -1,13 +1,12 @@
 use crate::{Color, Streams, StringLiteral};
 use yansi::Paint;
 
-pub fn delete_last_line(clear_length: usize, stream: Streams) -> Result<(), std::io::Error> {
-    write!(stream, "\r")?;
+pub fn delete_last_line(clear_length: usize, stream: Streams) {
+    write!(stream, "\r");
     for _ in 0..clear_length {
-        write!(stream, " ")?;
+        write!(stream, " ");
     }
-    write!(stream, "\r")?;
-    Ok(())
+    write!(stream, "\r");
 }
 
 /// Accepts a color option and spinner, returns a Paint<String> object (e.g. `Paint::green(spinner)`)
@@ -18,7 +17,7 @@ pub fn init_color(color: Option<Color>, spinner: StringLiteral) -> Paint<StringL
         Some(Color::Red) => Paint::red(spinner),
         Some(Color::Yellow) => Paint::yellow(spinner),
         Some(Color::Cyan) => Paint::cyan(spinner),
-        Some(Color::White) => Paint::new(spinner),
+        Some(Color::White) => Paint::white(spinner),
         Some(Color::Black) => Paint::black(spinner),
         Some(Color::Magenta) => Paint::magenta(spinner),
         None => Paint::new(spinner),
