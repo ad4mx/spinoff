@@ -1184,6 +1184,14 @@ pub static SPINNER_FRAMES: Lazy<HashMap<Spinners, SpinnerFrames>> = Lazy::new(||
             "▰▰▰▰▰▰▱",
             "▰▰▰▰▰▰▰",
             "▰▱▱▱▱▱▱"
-          ], interval: 80}
+          ], interval: 80},
+          Spinners::Binary => SpinnerFrames {frames: vec![
+            "010010",
+            "001100",
+            "100101",
+            "111010",
+            "111101",
+            "010111",
+          ], interval: 50},
     }
 });

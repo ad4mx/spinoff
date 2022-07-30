@@ -1,6 +1,6 @@
 [package]
 name = "spinoff"
-version = "0.5.1"
+version = "0.5.2"
 edition = "2021"
 authors = ["ad4m"]
 description = "Simple to use Rust library for displaying spinners in the terminal"
@@ -14,6 +14,6 @@ include = ["src/**/*", "README.md"]
 
 [dependencies]
 maplit = "1.0.2"
-yansi = "0.5.1"
 strum = { version = "0.24.0", features = ["derive"] }
 once_cell = "1.13.0"
+colored = "2.0.0"

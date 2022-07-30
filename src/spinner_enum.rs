@@ -27,6 +27,7 @@ pub enum Spinners {
     BouncingBar,
     BoxBounce,
     BoxBounce2,
+    Binary,
     Christmas,
     Circle,
     CircleHalves,

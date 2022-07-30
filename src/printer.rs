@@ -1,6 +1,42 @@
-use crate::{Color, Streams, StringLiteral};
-use yansi::Paint;
+use crate::Streams;
+use colored::{Colorize, ColoredString};
 
+/// Color for spinner. Supports the 8 basic colors and a custom color variant.
+#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+#[non_exhaustive]
+pub enum Color {
+    Blue,
+    Green,
+    Red,
+    Yellow,
+    Cyan,
+    White,
+    Black,
+    Magenta,
+    TrueColor {r: u8, g: u8, b: u8},
+}
+
+// Internal macro for coloring text with a supplied Color enum variant. 
+// Why not just match? Having matching automated helps with scaling and readability.
+// TODO: This macro requires a call with all the variants listed. We could rewrite this to not require that.
+macro_rules! color {
+    (
+        $($variant:ident: $paint_method:ident,)*
+    ) => {
+        pub fn colorize(color: Option<Color>, spinner: &str) -> ColoredString {
+            match color {
+                $(
+                    Some(Color::$variant) => spinner.$paint_method(),
+                )*          
+                Some(Color::TrueColor {r, g, b}) => spinner.truecolor(r, g, b),      
+                None => spinner.white(),
+            }
+        }        
+    };
+} 
+
+/// Internal function for deleting the last line in a terminal.
+/// This is used to clear the spinner.
 pub fn delete_last_line(clear_length: usize, stream: Streams) {
     write!(stream, "\r");
     for _ in 0..clear_length {
@@ -9,17 +45,13 @@ pub fn delete_last_line(clear_length: usize, stream: Streams) {
     write!(stream, "\r");
 }
 
-/// Accepts a color option and spinner, returns a Paint<String> object (e.g. `Paint::green(spinner)`)
-pub fn init_color(color: Option<Color>, spinner: StringLiteral) -> Paint<StringLiteral> {
-    match color {
-        Some(Color::Blue) => Paint::blue(spinner),
-        Some(Color::Green) => Paint::green(spinner),
-        Some(Color::Red) => Paint::red(spinner),
-        Some(Color::Yellow) => Paint::yellow(spinner),
-        Some(Color::Cyan) => Paint::cyan(spinner),
-        Some(Color::White) => Paint::white(spinner),
-        Some(Color::Black) => Paint::black(spinner),
-        Some(Color::Magenta) => Paint::magenta(spinner),
-        None => Paint::new(spinner),
-    }
-}
+color!(
+    Red: red,
+    Green: green,
+    Yellow: yellow,
+    Blue: blue,
+    Magenta: magenta,
+    Cyan: cyan,
+    White: white,
+    Black: black,
+);
