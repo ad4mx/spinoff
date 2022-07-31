@@ -10,7 +10,7 @@ Add as a dependency to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-spinoff = "0.5.2"
+spinoff = "0.5.3"
 ```	
 
 ## ⚡ Usage
