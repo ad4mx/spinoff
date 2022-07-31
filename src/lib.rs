@@ -135,7 +135,7 @@ impl Spinner {
                 // Dynamically delete the last line of the terminal depending on the length of the message + spinner.
                 let mut last_length = 0;
                 for frame in frames {
-                    let frame_str = format!(" {} {}", colorize(color, frame), msg);
+                    let frame_str = format!("{} {}", colorize(color, frame), msg);
                     // Get us back to the start of the line.
                     delete_last_line(last_length, stream);
                     last_length = frame_str.bytes().len();
