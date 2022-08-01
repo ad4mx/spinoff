@@ -89,6 +89,10 @@ cargo run --example simple
 Any contributions to this crate are highly appreciated. If you have any ideas/suggestions/bug fixes, please open an issue or a pull request.
 If you like the project, [star this project on GitHub.](https://github.com/ad4mx/spinoff)
 
+## ❗️ Disclaimer
+
+This project is still heavily unstable and is not meant to be used in production. It is still in rapid development and may change without notice.
+
 ## 📑 License
 
 This crate is licensed under the [MIT license](LICENSE).
