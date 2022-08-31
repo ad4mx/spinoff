@@ -28,8 +28,8 @@ macro_rules! color {
                 $(
                     Some(Color::$variant) => spinner.$paint_method(),
                 )*          
-                Some(Color::TrueColor {r, g, b}) => spinner.truecolor(r, g, b),      
-                None => spinner.white(),
+                Some(Color::TrueColor {r, g, b}) => spinner.truecolor(r, g, b), 
+                None => spinner.normal()
             }
         }        
     };
