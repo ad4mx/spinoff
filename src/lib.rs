@@ -24,22 +24,22 @@
 //! There are 9 colors available: blue, green, red, yellow, cyan, white, magenta, black and a custom variant.
 //! Don't want any of that? Simply pass `None` to the `color` option.
 #![allow(clippy::nursery)]
+use colored::{control, Colorize};
 use std::borrow::Cow;
 use std::io::Write;
 use std::sync::{atomic::AtomicBool, Arc};
 use std::thread::{self, JoinHandle};
-use colored::Colorize;
 
 mod printer;
 mod spinner_data;
 mod spinner_enum;
 mod streams;
 
-use printer::{delete_last_line, colorize};
+pub use printer::Color;
+use printer::{colorize, delete_last_line};
 use spinner_data::SPINNER_FRAMES;
 pub use spinner_enum::Spinners;
 pub use streams::Streams;
-pub use printer::Color;
 
 /// Terminal spinner.
 #[derive(Debug)]
@@ -51,6 +51,13 @@ pub struct Spinner {
     msg: Cow<'static, str>,
     stream: Streams,
     color: Option<Color>,
+}
+
+/// OS limited function to start a virtual terminal.
+/// This fixes some coloring quirks in the `colored` crate.
+#[cfg(target_os = "windows")]
+pub fn start_virtual_terminal() {
+    control::set_virtual_terminal(true).expect("error: failed to set virtual terminal");
 }
 
 impl Spinner {
@@ -115,6 +122,9 @@ impl Spinner {
         T: Into<Cow<'static, str>>,
         U: Into<Option<Color>>,
     {
+        if cfg!(windows) {
+            start_virtual_terminal();
+        }
         let still_spinning = Arc::new(AtomicBool::new(true));
         // Gain ownership of the message and color for the thread to use
         let msg = msg.into();
@@ -125,7 +135,9 @@ impl Spinner {
             let still_spinning = Arc::clone(&still_spinning);
             let msg = msg.clone();
             move || {
-                let spinner_data = SPINNER_FRAMES.get(&spinner_type).expect("error: invalid spinner type");
+                let spinner_data = SPINNER_FRAMES
+                    .get(&spinner_type)
+                    .expect("error: invalid spinner type");
                 // Iterate over all the frames of the spinner while the atomic bool is true.
                 let frames = spinner_data
                     .frames
@@ -140,10 +152,13 @@ impl Spinner {
                     delete_last_line(last_length, stream);
                     last_length = frame_str.bytes().len();
                     write!(stream, "{}", frame_str);
-                    stream.get_stream().flush().expect("error: failed to flush stream");
+                    stream
+                        .get_stream()
+                        .flush()
+                        .expect("error: failed to flush stream");
 
                     thread::sleep(std::time::Duration::from_millis(
-                        u64::from(spinner_data.interval),
+                        u64::from(spinner_data.interval)
                     ));
                 }
                 delete_last_line(last_length, stream);
@@ -322,7 +337,10 @@ impl Spinner {
         U: Into<Option<Color>>,
     {
         self.stop_spinner_thread();
-        let _replaced = std::mem::replace(self, Self::new_with_stream(spinner, msg, color, self.stream));
+        let _replaced = std::mem::replace(
+            self,
+            Self::new_with_stream(spinner, msg, color, self.stream),
+        );
     }
 
     /// Update the spinner text.
@@ -347,7 +365,10 @@ impl Spinner {
         T: Into<Cow<'static, str>>,
     {
         self.stop_spinner_thread();
-        let _replaced = std::mem::replace(self, Self::new_with_stream(self.spinner_type, msg, self.color, self.stream));
+        let _replaced = std::mem::replace(
+            self,
+            Self::new_with_stream(self.spinner_type, msg, self.color, self.stream),
+        );
     }
 
     /// Deletes the last line of the terminal.

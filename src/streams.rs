@@ -10,7 +10,7 @@ pub enum Streams {
 
 impl Streams {
     // Returns the stream to use.
-    #[must_use = "Stream must be retrieved"] 
+    #[must_use = "Stream must be retrieved"]
     pub fn get_stream(self) -> Box<dyn Write + Send + Sync> {
         match self {
             Streams::Stdout => Box::new(stdout()),
