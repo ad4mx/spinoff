@@ -53,7 +53,9 @@ pub struct Spinner {
     color: Option<Color>,
 }
 
+/// OS limited function to start a virtual terminal.
 /// This fixes some coloring quirks in the `colored` crate.
+#[cfg(target_os = "windows")]
 pub fn start_virtual_terminal() {
     control::set_virtual_terminal(true).expect("error: failed to set virtual terminal");
 }
