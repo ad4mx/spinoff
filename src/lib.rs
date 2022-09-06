@@ -53,11 +53,6 @@ pub struct Spinner {
     color: Option<Color>,
 }
 
-/// This fixes some coloring quirks in the `colored` crate.
-pub fn start_virtual_terminal() {
-    control::set_virtual_terminal(true).expect("error: failed to set virtual terminal");
-}
-
 impl Spinner {
     /// Create a new spinner.
     ///
@@ -121,7 +116,7 @@ impl Spinner {
         U: Into<Option<Color>>,
     {
         if cfg!(windows) {
-            start_virtual_terminal();
+            control::set_virtual_terminal(true).expect("error: couldn't set virtual terminal")
         }
         let still_spinning = Arc::new(AtomicBool::new(true));
         // Gain ownership of the message and color for the thread to use
