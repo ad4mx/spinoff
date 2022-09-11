@@ -10,7 +10,7 @@ Add as a dependency to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-spinoff = "0.5.3"
+spinoff = "0.5.4"
 ```	
 
 ## ⚡ Usage
@@ -36,8 +36,6 @@ let mut spinner = Spinner::new(Spinners::Aesthetic, "Loading...", Color::Red);
 sleep(Duration::from_secs(3));
 spinner.update(Spinners::Dots2, "Retrying...", None);
 sleep(Duration::from_secs(3));
-spinner.update_text("Not quite done...");
-sleep(Duration::from_secs(1));
 spinner.stop()
 ```
 
@@ -65,6 +63,12 @@ sleep(Duration::from_secs(3));
 spinner.stop_and_persist("📜", "Task done.");
 ```
 
+### ❗Note for Windows Users
+For colors to work properly, you need to add an extra line to your code: 
+```rust
+spinoff::enable_virtual_terminal(true).unwrap();
+```
+
 Other examples can be found in the [documentation](https://docs.rs/spinoff/latest/spinoff/).
 
 
@@ -88,10 +92,6 @@ cargo run --example simple
 
 Any contributions to this crate are highly appreciated. If you have any ideas/suggestions/bug fixes, please open an issue or a pull request.
 If you like the project, [star this project on GitHub.](https://github.com/ad4mx/spinoff)
-
-## ❗️ Disclaimer
-
-This project is still heavily unstable and is not meant to be used in production. It is still in rapid development and may change without notice.
 
 ## 📑 License
 

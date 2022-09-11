@@ -24,7 +24,7 @@
 //! There are 9 colors available: blue, green, red, yellow, cyan, white, magenta, black and a custom variant.
 //! Don't want any of that? Simply pass `None` to the `color` option.
 #![allow(clippy::nursery)]
-use colored::{control, Colorize};
+use colored::{Colorize};
 use std::borrow::Cow;
 use std::io::Write;
 use std::sync::{atomic::AtomicBool, Arc};
@@ -40,6 +40,7 @@ use printer::{colorize, delete_last_line};
 use spinner_data::SPINNER_FRAMES;
 pub use spinner_enum::Spinners;
 pub use streams::Streams;
+pub use colored::control::set_virtual_terminal as enable_virtual_terminal;
 
 /// Terminal spinner.
 #[derive(Debug)]
@@ -115,9 +116,6 @@ impl Spinner {
         T: Into<Cow<'static, str>>,
         U: Into<Option<Color>>,
     {
-        if cfg!(windows) {
-            control::set_virtual_terminal(true).expect("error: couldn't set virtual terminal")
-        }
         let still_spinning = Arc::new(AtomicBool::new(true));
         // Gain ownership of the message and color for the thread to use
         let msg = msg.into();
