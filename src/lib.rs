@@ -40,7 +40,6 @@ use printer::{colorize, delete_last_line};
 use spinner_data::SPINNER_FRAMES;
 pub use spinner_enum::Spinners;
 pub use streams::Streams;
-pub use colored::control::set_virtual_terminal as enable_virtual_terminal;
 
 /// Terminal spinner.
 #[derive(Debug)]

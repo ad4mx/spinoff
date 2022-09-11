@@ -64,9 +64,10 @@ spinner.stop_and_persist("📜", "Task done.");
 ```
 
 ### ❗Note for Windows Users
-For colors to work properly, you need to add an extra line to your code: 
+For colors to work properly, you need to add a few extra lines to your code: 
 ```rust
-spinoff::enable_virtual_terminal(true).unwrap();
+use colored::control
+control::enable_virtual_terminal(true).unwrap();
 ```
 
 Other examples can be found in the [documentation](https://docs.rs/spinoff/latest/spinoff/).
