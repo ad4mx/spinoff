@@ -1,4 +1,4 @@
-use spinoff::{Spinner, Spinners, Color};
+use spinoff::{Color, Spinner, Spinners};
 use std::{thread::sleep, time::Duration};
 
 fn main() {
