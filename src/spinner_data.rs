@@ -1193,5 +1193,17 @@ pub static SPINNER_FRAMES: Lazy<HashMap<Spinners, SpinnerFrames>> = Lazy::new(||
             "111101",
             "010111",
           ], interval: 50},
+          Spinners::Emoticon => SpinnerFrames {frames: vec![
+            "( ´･ω･)",
+            "(　´･ω)",
+            "( 　´･)",
+            "( 　 ´)",
+            "(     )",
+            "(`　  )",
+            "(･`   )",
+            "(ω･`　)",
+            "(･ω･` )",
+            "(´･ω･`)",
+          ], interval: 100},
     }
 });

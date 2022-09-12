@@ -48,6 +48,7 @@ pub enum Spinners {
     Dots9,
     Dqpb,
     Earth,
+    Emoticon,
     FingerDance,
     FistBump,
     Flip,
