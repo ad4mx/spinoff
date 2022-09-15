@@ -33,6 +33,7 @@ pub enum Spinners {
     CircleHalves,
     CircleQuarters,
     Clock,
+    Cute,
     Dots,
     Dots10,
     Dots11,
