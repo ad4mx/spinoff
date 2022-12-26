@@ -23,8 +23,8 @@
 //! You can also color your spinners without any hassle. Simply pass a color to the `color` option.
 //! There are 9 colors available: blue, green, red, yellow, cyan, white, magenta, black and a custom variant.
 //! Don't want any of that? Simply pass `None` to the `color` option.
-#![allow(clippy::nursery)]
-use colored::{Colorize};
+//#![allow(clippy::nursery)]
+use colored::Colorize;
 use std::borrow::Cow;
 use std::io::Write;
 use std::sync::{atomic::AtomicBool, Arc};

@@ -13,8 +13,8 @@ impl Streams {
     #[must_use = "Stream must be retrieved"]
     pub fn get_stream(self) -> Box<dyn Write + Send + Sync> {
         match self {
-            Streams::Stdout => Box::new(stdout()),
-            Streams::Stderr => Box::new(stderr()),
+            Self::Stdout => Box::new(stdout()),
+            Self::Stderr => Box::new(stderr()),
         }
     }
     // Clever implementation that allows us to automatically get the stream when `write!` is called.
@@ -24,4 +24,5 @@ impl Streams {
     {
         write!(self.get_stream(), "{}", fmt).expect("error: failed to write to stream");
     }
+
 }
