@@ -16,23 +16,19 @@ pub enum Color {
     TrueColor { r: u8, g: u8, b: u8 },
 }
 
-// Internal macro for coloring text with a supplied Color enum variant.
-// Why not just match? Having matching automated helps with scaling and readability.
-// TODO: This macro requires a call with all the variants listed. We could rewrite this to not require that.
-macro_rules! color {
-    (
-        $($variant:ident: $paint_method:ident,)*
-    ) => {
-        pub fn colorize(color: Option<Color>, spinner: &str) -> ColoredString {
-            match color {
-                $(
-                    Some(Color::$variant) => spinner.$paint_method(),
-                )*
-                Some(Color::TrueColor {r, g, b}) => spinner.truecolor(r, g, b),
-                None => spinner.normal()
-            }
-        }
-    };
+pub fn colorize(color: Option<Color>, frame: &str) -> ColoredString {
+    match color {
+        Some(Color::Blue) => frame.blue(),
+        Some(Color::Green) => frame.green(),
+        Some(Color::Red) => frame.red(),
+        Some(Color::Yellow) => frame.yellow(),
+        Some(Color::Cyan) => frame.cyan(),
+        Some(Color::White) => frame.white(),
+        Some(Color::Black) => frame.black(),
+        Some(Color::Magenta) => frame.magenta(),
+        Some(Color::TrueColor { r, g, b }) => frame.truecolor(r, g, b),
+        None => frame.normal()
+    }
 }
 
 /// Internal function for deleting the last line in a terminal.
@@ -45,13 +41,4 @@ pub fn delete_last_line(clear_length: usize, stream: Streams) {
     write!(stream, "\r");
 }
 
-color!(
-    Red: red,
-    Green: green,
-    Yellow: yellow,
-    Blue: blue,
-    Magenta: magenta,
-    Cyan: cyan,
-    White: white,
-    Black: black,
-);
+
