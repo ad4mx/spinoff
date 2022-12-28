@@ -23,12 +23,19 @@
 //! You can also color your spinners without any hassle. Simply pass a color to the `color` option.
 //! There are 9 colors available: blue, green, red, yellow, cyan, white, magenta, black and a custom variant.
 //! Don't want any of that? Simply pass `None` to the `color` option.
+//! 
+//! ### Note
+//! 
+//! Currently, the library is designed in a way that doesn't support using multiple spinners at a time. However, that may change in the future.
+//! 
 #![allow(clippy::nursery)]
 use colored::{Colorize};
 use std::borrow::Cow;
 use std::io::Write;
 use std::sync::{atomic::AtomicBool, Arc};
 use std::thread::{self, JoinHandle};
+use std::time::Duration;
+use std::thread::sleep;
 
 mod printer;
 mod spinner_data;
@@ -360,7 +367,31 @@ impl Spinner {
             Self::new_with_stream(self.spinner_type, msg, self.color, self.stream),
         );
     }
-
+    /// Updates the spinner text after a certain amount of time has passed since the initial `::new` call.
+    /// 
+    /// # Example
+    /// 
+    /// ```
+    /// # use spinoff::*;
+    /// # use std::thread::sleep;
+    /// # use std::time::Duration;
+    /// #
+    /// let mut sp = Spinner::new(Spinners::Arc, "Loading...", Color::Blue);
+    /// sp.update_after_time("Not Done Yet...", Duration::from_secs(2));
+    /// sleep(Duration::from_millis(800));
+    /// sp.success("Done!");
+    /// 
+    pub fn update_after_time<T>(&mut self, updated_msg: T, duration: Duration) 
+    where
+        T: Into<Cow<'static, str>> 
+    {
+        sleep(duration);
+        self.stop_spinner_thread();
+        let _ = std::mem::replace(
+            self, 
+            Self::new_with_stream(self.spinner_type, updated_msg, self.color, self.stream)
+        );
+    }
     /// Deletes the last line of the terminal.
     ///     
     /// # Example
