@@ -1,7 +1,7 @@
 # spinoff
 > simple library for displaying spinners in the terminal
 
-[![Version](https://img.shields.io/crates/v/spinoff.svg)](https://crates.io/crates/spinoff) [![Downloads](https://img.shields.io/crates/d/spinoff)](https://crates.io/crates/spinoff) [![Docs](https://img.shields.io/docsrs/spinoff)](https://docs.rs/spinoff/latest/spinoff) [![License](https://img.shields.io/crates/l/spinoff)](https://crates.io/crates/spinoff) ![Actions](https://img.shields.io/github/workflow/status/ad4mx/spinoff/Rust)
+[![Version](https://img.shields.io/crates/v/spinoff.svg)](https://crates.io/crates/spinoff) [![Downloads](https://img.shields.io/crates/d/spinoff)](https://crates.io/crates/spinoff) [![Docs](https://img.shields.io/docsrs/spinoff)](https://docs.rs/spinoff/latest/spinoff) [![License](https://img.shields.io/crates/l/spinoff)](https://crates.io/crates/spinoff) ![Actions](https://img.shields.io/github/actions/workflow/status/ad4mx/spinoff/rust.yml?branch=main)
 
 
 ![](assets/index.gif)
@@ -10,7 +10,7 @@ Add as a dependency to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-spinoff = "0.5.4"
+spinoff = "0.6.0"
 ```	
 
 ## ⚡ Usage

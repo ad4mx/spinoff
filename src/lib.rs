@@ -1,42 +1,51 @@
-//! ## spinoff
-//!
-//! `spinoff` is a simple library for displaying spinners in the terminal.
-//!
-//! ### Usage
-//!
-//! ```
-//! # use spinoff::*;
-//! # use std::thread::sleep;
-//! # use std::time::Duration;
-//! #
-//! let sp = Spinner::new(Spinners::Dots, "Loading...", None);
-//! sleep(Duration::from_millis(800));
-//! sp.success("Success!");
-//! ```
-//!
-//! ### Spinners
-//!
-//! There are over 80+ spinners available in the [`Spinners`] enum.
-//!
-//! ### Colors
-//!
-//! You can also color your spinners without any hassle. Simply pass a color to the `color` option.
-//! There are 9 colors available: blue, green, red, yellow, cyan, white, magenta, black and a custom variant.
-//! Don't want any of that? Simply pass `None` to the `color` option.
-//#![allow(clippy::nursery)]
+/*!
+## spinoff
+
+`spinoff` is a simple library for displaying spinners in the terminal.
+
+### Usage
+
+```
+# use spinoff::*;
+# use std::thread::sleep;
+# use std::time::Duration;
+#
+let sp = Spinner::new(Spinners::Dots, "Loading...", None);
+sleep(Duration::from_millis(800));
+sp.success("Success!");
+```
+
+### Spinners
+
+There are over 80+ spinners available in the [`Spinners`] enum.
+
+### Colors
+
+You can also color your spinners without any hassle. Simply pass a color to the `color` option.
+There are 9 colors available: blue, green, red, yellow, cyan, white, magenta, black and a custom variant.
+Don't want any of that? Simply pass `None` to the `color` option.
+
+### Note
+
+Currently, the library is designed in a way that doesn't support using multiple spinners at a time. However, that may change in the future.
+
+*/
+#![allow(clippy::nursery)]
 use colored::Colorize;
 use std::borrow::Cow;
 use std::io::Write;
 use std::sync::{atomic::AtomicBool, Arc};
 use std::thread::{self, JoinHandle};
+use std::time::Duration;
+use std::thread::sleep;
 
-mod printer;
+mod utils;
 mod spinner_data;
 mod spinner_enum;
 mod streams;
 
-pub use printer::Color;
-use printer::{colorize, delete_last_line};
+pub use utils::Color;
+use utils::{colorize, delete_last_line};
 use spinner_data::SPINNER_FRAMES;
 pub use spinner_enum::Spinners;
 pub use streams::Streams;
@@ -54,30 +63,32 @@ pub struct Spinner {
 }
 
 impl Spinner {
-    /// Create a new spinner.
-    ///
-    /// # Arguments
-    ///
-    /// * `spinner_type` - The spinner to use.
-    /// * `msg` - The message to display.
-    /// * `color` - The color of the spinner.
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// # use spinoff::*;
-    /// # use std::thread::sleep;
-    /// # use std::time::Duration;
-    /// #
-    /// let sp = Spinner::new(Spinners::Dots, "Hello World!", Color::Blue);
-    /// sleep(Duration::from_millis(800));
-    /// sp.stop();
-    /// ```
-    ///
-    /// # Notes
-    ///
-    /// * The spinner immediately starts spinning upon creation.
-    /// * This function outputs to the `stdout` stream. If you want to use a different stream, use the [`Spinner::new_with_stream`] function.
+    /**
+    Create a new spinner.
+
+    # Arguments
+
+    * `spinner_type` - The spinner to use.
+    * `msg` - The message to display.
+    * `color` - The color of the spinner.
+
+    # Example
+
+    ```
+    # use spinoff::*;
+    # use std::thread::sleep;
+    # use std::time::Duration;
+    #
+    let sp = Spinner::new(Spinners::Dots, "Hello World!", Color::Blue);
+    sleep(Duration::from_millis(800));
+    sp.stop();
+    ```
+
+    # Notes
+
+    * The spinner immediately starts spinning upon creation.
+    * This function outputs to the `stdout` stream. If you want to use a different stream, use the [`Spinner::new_with_stream`] function.
+    */
     pub fn new<T, U>(spinner_type: Spinners, msg: T, color: U) -> Self
     where
         T: Into<Cow<'static, str>>,
@@ -85,31 +96,33 @@ impl Spinner {
     {
         Self::new_with_stream(spinner_type, msg, color, Streams::default())
     }
-    /// Create a new spinner outputting to a specific stream.
-    ///
-    /// # Arguments
-    ///
-    /// * `spinner_type` - The spinner to use.
-    /// * `msg` - The message to display.
-    /// * `color` - The color of the spinner.
-    /// * `stream` - The stream to output to.
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// # use spinoff::*;
-    /// # use std::thread::sleep;
-    /// # use std::time::Duration;
-    /// #
-    /// let sp = Spinner::new_with_stream(Spinners::Dots, "I'm outputting to stderr!", Color::Yellow, Streams::Stderr);
-    /// sleep(Duration::from_millis(800));
-    /// sp.clear();
-    /// ```
-    ///
-    /// # Notes
-    ///
-    /// * The spinner immediately starts spinning upon creation.
-    ///
+    /**
+    Create a new spinner outputting to a specific stream.
+
+    # Arguments
+
+    * `spinner_type` - The spinner to use.
+    * `msg` - The message to display.
+    * `color` - The color of the spinner.
+    * `stream` - The stream to output to.
+
+    # Example
+
+    ```
+    # use spinoff::*;
+    # use std::thread::sleep;
+    # use std::time::Duration;
+    #
+    let sp = Spinner::new_with_stream(Spinners::Dots, "I'm outputting to stderr!", Color::Yellow, Streams::Stderr);
+    sleep(Duration::from_millis(800));
+    sp.clear();
+    ```
+
+    # Notes
+
+    * The spinner immediately starts spinning upon creation.
+
+    */
     pub fn new_with_stream<T, U>(spinner_type: Spinners, msg: T, color: U, stream: Streams) -> Self
     where
         T: Into<Cow<'static, str>>,
@@ -165,162 +178,178 @@ impl Spinner {
             color,
         }
     }
-    /// Stop the spinner.
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// # use spinoff::{Spinners, Spinner};
-    /// # use std::thread::sleep;
-    /// # use std::time::Duration;
-    /// #
-    /// let sp = Spinner::new(Spinners::Dots9, "Spinning...", None);
-    /// sleep(Duration::from_millis(800));
-    /// sp.stop();
-    /// ```
-    ///
-    /// # Notes
-    ///
-    /// * The spinner will be dropped after this method is called, the message will remain though.
-    ///
+    /**
+    Stop the spinner.
+
+    # Example
+
+    ```
+    # use spinoff::{Spinners, Spinner};
+    # use std::thread::sleep;
+    # use std::time::Duration;
+    #
+    let sp = Spinner::new(Spinners::Dots9, "Spinning...", None);
+    sleep(Duration::from_millis(800));
+    sp.stop();
+    ```
+
+    # Notes
+
+    * The spinner will be dropped after this method is called, the message will remain though.
+
+    */
     pub fn stop(mut self) {
         self.stop_spinner_thread();
         // print message
         writeln!(self.stream, "{}", self.msg);
     }
 
-    /// Stops the spinner and prints a message on a new line.
-    ///     
-    /// # Example
-    ///
-    /// ```
-    /// # use spinoff::{Spinners, Spinner};
-    /// # use std::thread::sleep;
-    /// # use std::time::Duration;
-    /// #
-    /// let sp = Spinner::new(Spinners::Dots2, "Hello", None);
-    /// sleep(Duration::from_millis(800));
-    /// sp.stop_with_message("Bye");
-    /// ```
-    ///
+    /**
+    Stops the spinner and prints a message on a new line.
+        
+    # Example
+
+    ```
+    # use spinoff::{Spinners, Spinner};
+    # use std::thread::sleep;
+    # use std::time::Duration;
+    #
+    let sp = Spinner::new(Spinners::Dots2, "Hello", None);
+    sleep(Duration::from_millis(800));
+    sp.stop_with_message("Bye");
+    ```
+
+    */
     pub fn stop_with_message(mut self, msg: &str) {
         self.stop_spinner_thread();
         // put the message over the spinner
         writeln!(self.stream, "{}", msg);
     }
 
-    /// Deletes the spinner and message and prints a new line with a symbol and message.
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// # use spinoff::{Spinners, Spinner};
-    /// # use std::thread::sleep;
-    /// # use std::time::Duration;
-    /// #
-    /// let sp = Spinner::new(Spinners::Mindblown, "Guess what's coming...", None);
-    /// sleep(Duration::from_millis(800));
-    /// sp.stop_and_persist("🍕", "Pizza!");
-    /// ```
-    ///
+    /**
+    Deletes the spinner and message and prints a new line with a symbol and message.
+
+    # Example
+
+    ```
+    # use spinoff::{Spinners, Spinner};
+    # use std::thread::sleep;
+    # use std::time::Duration;
+    #
+    let sp = Spinner::new(Spinners::Mindblown, "Guess what's coming...", None);
+    sleep(Duration::from_millis(800));
+    sp.stop_and_persist("🍕", "Pizza!");
+    ```
+
+    */
     pub fn stop_and_persist(mut self, symbol: &str, msg: &str) {
         self.stop_spinner_thread();
         writeln!(self.stream, "{} {}", symbol, msg);
     }
 
-    /// Deletes the last line of the terminal and prints a success symbol with a message.
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// # use spinoff::{Spinners, Spinner};
-    /// # use std::thread::sleep;
-    /// # use std::time::Duration;
-    /// #    
-    /// let sp = Spinner::new(Spinners::Aesthetic, "Trying to load information...", None);
-    /// sleep(Duration::from_millis(800));
-    /// sp.success("Success!");
-    /// ```
-    ///
+    /**
+    Deletes the last line of the terminal and prints a success symbol with a message.
+
+    # Example
+
+    ```
+    # use spinoff::{Spinners, Spinner};
+    # use std::thread::sleep;
+    # use std::time::Duration;
+    #    
+    let sp = Spinner::new(Spinners::Aesthetic, "Trying to load information...", None);
+    sleep(Duration::from_millis(800));
+    sp.success("Success!");
+    ```
+
+    */
     pub fn success(mut self, msg: &str) {
         self.stop_spinner_thread();
         writeln!(self.stream, "{} {}", colorize(Some(Color::Green), "✓").bold(), msg);
     }
 
-    /// Deletes the last line of the terminal and prints a failure symbol with a message to stderr.
-    ///     
-    /// # Example
-    ///
-    /// ```
-    /// # use spinoff::{Spinners, Spinner, Color};
-    /// # use std::thread::sleep;
-    /// # use std::time::Duration;
-    /// #   
-    /// let sp = Spinner::new(Spinners::BouncingBar, "Executing code...", Color::Green);
-    /// sleep(Duration::from_millis(800));
-    /// sp.fail("Code failed to compile!");
-    /// ```
-    ///
+    /**
+    Deletes the last line of the terminal and prints a failure symbol with a message to stderr.
+        
+    # Example
+
+    ```
+    # use spinoff::{Spinners, Spinner, Color};
+    # use std::thread::sleep;
+    # use std::time::Duration;
+    #   
+    let sp = Spinner::new(Spinners::BouncingBar, "Executing code...", Color::Green);
+    sleep(Duration::from_millis(800));
+    sp.fail("Code failed to compile!");
+    ```
+
+    */
     pub fn fail(mut self, msg: &str) {
         self.stop_spinner_thread();
         writeln!(self.stream, "{} {}", colorize(Some(Color::Red), "✗").bold(), msg);
     }
 
-    /// Deletes the last line of the terminal and prints a warning symbol with a message.
-    ///     
-    /// # Example
-    ///
-    /// ```
-    /// # use spinoff::{Spinners, Spinner};
-    /// # use std::thread::sleep;
-    /// # use std::time::Duration;
-    /// #   
-    /// let sp = Spinner::new(Spinners::Material, "Measuring network speed...", None);
-    /// sleep(Duration::from_millis(800));
-    /// sp.warn("You might want to check your internet connection...");
-    /// ```
-    ///
+    /**
+    Deletes the last line of the terminal and prints a warning symbol with a message.
+        
+    # Example
+
+    ```
+    # use spinoff::{Spinners, Spinner};
+    # use std::thread::sleep;
+    # use std::time::Duration;
+    #   
+    let sp = Spinner::new(Spinners::Material, "Measuring network speed...", None);
+    sleep(Duration::from_millis(800));
+    sp.warn("You might want to check your internet connection...");
+    ```
+
+    */
     pub fn warn(mut self, msg: &str) {
         self.stop_spinner_thread();
         writeln!(self.stream, "{} {}", colorize(Some(Color::Yellow), "⚠").bold(), msg);
     }
-    /// Deletes the last line of the terminal and prints an info symbol with a message.
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// # use spinoff::{Spinners, Spinner};
-    /// # use std::thread::sleep;
-    /// # use std::time::Duration;
-    ///  
-    /// let sp = Spinner::new(Spinners::Dots9, "Loading info message...", None);
-    /// sleep(Duration::from_millis(800));
-    /// sp.info("This is an info message!");    
-    /// ```
-    ///
+    /**
+    Deletes the last line of the terminal and prints an info symbol with a message.
+
+    # Example
+
+    ```
+    # use spinoff::{Spinners, Spinner};
+    # use std::thread::sleep;
+    # use std::time::Duration;
+     
+    let sp = Spinner::new(Spinners::Dots9, "Loading info message...", None);
+    sleep(Duration::from_millis(800));
+    sp.info("This is an info message!");    
+    ```
+
+    */
     pub fn info(mut self, msg: &str) {
         self.stop_spinner_thread();
         writeln!(self.stream, "{} {}", colorize(Some(Color::Blue), "ℹ").bold(), msg);
     }
 
-    /// Updates the spinner.
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// # use spinoff::*;
-    /// # use std::thread::sleep;
-    /// # use std::time::Duration;
-    /// #   
-    /// let mut sp = Spinner::new(Spinners::Dots, "Hello", None);
-    ///
-    /// sleep(Duration::from_millis(800));
-    /// sp.update(Spinners::Dots2, "World", None);
-    /// sleep(Duration::from_millis(800));
-    ///
-    /// sp.stop();
-    /// ```
-    ///
+    /**
+    Updates the spinner.
+
+    # Example
+
+    ```
+    # use spinoff::*;
+    # use std::thread::sleep;
+    # use std::time::Duration;
+    #   
+    let mut sp = Spinner::new(Spinners::Dots, "Hello", None);
+
+    sleep(Duration::from_millis(800));
+    sp.update(Spinners::Dots2, "World", None);
+    sleep(Duration::from_millis(800));
+
+    sp.stop();
+    ```
+
+    */
     pub fn update<T, U>(&mut self, spinner: Spinners, msg: T, color: U)
     where
         T: Into<Cow<'static, str>>,
@@ -333,23 +362,25 @@ impl Spinner {
         );
     }
 
-    /// Update the spinner text.
-    ///
-    /// # Example
-    ///
-    /// ```
-    /// # use spinoff::*;
-    /// # use std::thread::sleep;
-    /// # use std::time::Duration;
-    /// #
-    /// let mut sp = Spinner::new(Spinners::Arc, "Loading...", Color::Magenta);
-    /// sleep(Duration::from_millis(800));
-    /// sp.update_text("Not quite finished...");
-    /// sleep(Duration::from_millis(800));
-    /// sp.update_text("Almost done...");
-    /// sleep(Duration::from_millis(800));
-    /// sp.success("Done!");
-    ///
+    /**
+    Update the spinner text.
+
+    # Example
+
+    ```
+    # use spinoff::*;
+    # use std::thread::sleep;
+    # use std::time::Duration;
+    #
+    let mut sp = Spinner::new(Spinners::Arc, "Loading...", Color::Magenta);
+    sleep(Duration::from_millis(800));
+    sp.update_text("Not quite finished...");
+    sleep(Duration::from_millis(800));
+    sp.update_text("Almost done...");
+    sleep(Duration::from_millis(800));
+    sp.success("Done!");
+
+    */
     pub fn update_text<T>(&mut self, msg: T)
     where
         T: Into<Cow<'static, str>>,
@@ -360,21 +391,54 @@ impl Spinner {
             Self::new_with_stream(self.spinner_type, msg, self.color, self.stream),
         );
     }
+    /**
+    Updates the spinner text after a certain amount of time has passed since the initial `::new` call.
 
-    /// Deletes the last line of the terminal.
-    ///     
-    /// # Example
-    ///
-    /// ```
-    /// # use spinoff::{Spinners, Spinner};
-    /// # use std::thread::sleep;
-    /// # use std::time::Duration;
-    /// #
-    /// let sp = Spinner::new(Spinners::Grenade, "Clearing...", None);
-    /// sleep(Duration::from_millis(800));
-    /// sp.clear();
-    /// ```
-    ///
+    # Example
+
+    ```
+    # use spinoff::*;
+    # use std::thread::sleep;
+    # use std::time::Duration;
+    #
+    let mut sp = Spinner::new(Spinners::Arc, "Loading...", Color::Blue);
+    sp.update_after_time("Not Done Yet...", Duration::from_secs(2));
+    sleep(Duration::from_millis(800));
+    sp.success("Done!");
+    ```
+
+    # Notes
+
+    * This could be used to assure the user that the program is still running.
+
+    */
+    pub fn update_after_time<T>(&mut self, updated_msg: T, duration: Duration) 
+    where
+        T: Into<Cow<'static, str>> 
+    {
+        sleep(duration);
+        self.stop_spinner_thread();
+        let _ = std::mem::replace(
+            self, 
+            Self::new_with_stream(self.spinner_type, updated_msg, self.color, self.stream)
+        );
+    }
+    /**
+    Deletes the last line of the terminal.
+        
+    # Example
+
+    ```
+    # use spinoff::{Spinners, Spinner};
+    # use std::thread::sleep;
+    # use std::time::Duration;
+    #
+    let sp = Spinner::new(Spinners::Grenade, "Clearing...", None);
+    sleep(Duration::from_millis(800));
+    sp.clear();
+    ```
+
+    */
     pub fn clear(mut self) {
         self.stop_spinner_thread();
     }
