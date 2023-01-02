@@ -39,13 +39,13 @@ use std::thread::{self, JoinHandle};
 use std::time::Duration;
 use std::thread::sleep;
 
-mod printer;
+mod utils;
 mod spinner_data;
 mod spinner_enum;
 mod streams;
 
-pub use printer::Color;
-use printer::{colorize, delete_last_line};
+pub use utils::Color;
+use utils::{colorize, delete_last_line};
 use spinner_data::SPINNER_FRAMES;
 pub use spinner_enum::Spinners;
 pub use streams::Streams;
@@ -405,6 +405,11 @@ impl Spinner {
     sp.update_after_time("Not Done Yet...", Duration::from_secs(2));
     sleep(Duration::from_millis(800));
     sp.success("Done!");
+    ```
+
+    # Notes
+
+    * This could be used to assure the user that the program is still running.
 
     */
     pub fn update_after_time<T>(&mut self, updated_msg: T, duration: Duration) 
