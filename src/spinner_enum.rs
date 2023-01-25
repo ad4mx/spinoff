@@ -11,7 +11,18 @@ use strum::EnumIter;
 ///
 /// Each variant in this enum is assigned to a `HashMap` holding it's frames and interval count.
 ///
-#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, EnumIter, strum::Display)]
+#[derive(
+    Copy,
+    Clone,
+    Eq,
+    PartialEq,
+    Ord,
+    PartialOrd,
+    Hash,
+    Debug,
+    EnumIter,
+    strum::Display,
+)]
 pub enum Spinners {
     Aesthetic,
     Arc,

@@ -27,7 +27,7 @@ pub fn colorize(color: Option<Color>, frame: &str) -> ColoredString {
         Some(Color::Black) => frame.black(),
         Some(Color::Magenta) => frame.magenta(),
         Some(Color::TrueColor { r, g, b }) => frame.truecolor(r, g, b),
-        None => frame.normal()
+        None => frame.normal(),
     }
 }
 
@@ -40,5 +40,3 @@ pub fn delete_last_line(clear_length: usize, stream: Streams) {
     }
     write!(stream, "\r");
 }
-
-
