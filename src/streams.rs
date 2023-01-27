@@ -22,7 +22,6 @@ impl Streams {
     where
         T: std::fmt::Display,
     {
-        write!(self.get_stream(), "{}", fmt)
-            .expect("error: failed to write to stream");
+        write!(self.get_stream(), "{}", fmt).expect("error: failed to write to stream");
     }
 }

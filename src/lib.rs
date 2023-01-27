@@ -123,12 +123,7 @@ impl Spinner {
     * The spinner immediately starts spinning upon creation.
 
     */
-    pub fn new_with_stream<T, U>(
-        spinner_type: Spinners,
-        msg: T,
-        color: U,
-        stream: Streams,
-    ) -> Self
+    pub fn new_with_stream<T, U>(spinner_type: Spinners, msg: T, color: U, stream: Streams) -> Self
     where
         T: Into<Cow<'static, str>>,
         U: Into<Option<Color>>,
@@ -147,16 +142,15 @@ impl Spinner {
                     .get(&spinner_type)
                     .expect("error: invalid spinner type");
                 // Iterate over all the frames of the spinner while the atomic bool is true.
-                let frames =
-                    spinner_data.frames.iter().cycle().take_while(|_| {
-                        still_spinning
-                            .load(std::sync::atomic::Ordering::Relaxed)
-                    });
+                let frames = spinner_data
+                    .frames
+                    .iter()
+                    .cycle()
+                    .take_while(|_| still_spinning.load(std::sync::atomic::Ordering::Relaxed));
                 // Dynamically delete the last line of the terminal depending on the length of the message + spinner.
                 let mut last_length = 0;
                 for frame in frames {
-                    let frame_str =
-                        format!("{} {}", colorize(color, frame), msg);
+                    let frame_str = format!("{} {}", colorize(color, frame), msg);
                     // Get us back to the start of the line.
                     delete_last_line(last_length, stream);
                     last_length = frame_str.bytes().len();
@@ -414,12 +408,7 @@ impl Spinner {
         self.stop_spinner_thread();
         let _replaced = std::mem::replace(
             self,
-            Self::new_with_stream(
-                self.spinner_type,
-                msg,
-                self.color,
-                self.stream,
-            ),
+            Self::new_with_stream(self.spinner_type, msg, self.color, self.stream),
         );
     }
     /**
@@ -451,12 +440,7 @@ impl Spinner {
         self.stop_spinner_thread();
         let _ = std::mem::replace(
             self,
-            Self::new_with_stream(
-                self.spinner_type,
-                updated_msg,
-                self.color,
-                self.stream,
-            ),
+            Self::new_with_stream(self.spinner_type, updated_msg, self.color, self.stream),
         );
     }
     /**
