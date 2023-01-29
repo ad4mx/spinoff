@@ -59,7 +59,7 @@ To disable/enable variants, you will have to edit your `cargo.toml` file:
 
 ```toml
 [dependencies]
-spinoff = { version = "0.7.0", features = ["dots, arc, line"] }
+spinoff = { version = "0.7.0", features = ["dots", "arc", "line"] }
 ```
 
 ### Creating your own spinner
