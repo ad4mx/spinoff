@@ -13,7 +13,116 @@ categories = ["command-line-interface"]
 include = ["src/**/*", "README.md"]
 
 [dependencies]
-maplit = "1.0.2"
-strum = { version = "0.24.0", features = ["derive"] }
 once_cell = "1.13.0"
 colored = "2.0.0"
+paste = "1.0.11"
+
+[features]
+default = ["dots"]
+
+all = [
+  "dots", "dots2", "dots3", "dots4", "dots5", "dots6", "dots7", "dots8", "dots9",
+  "dots10", "dots11", "dots12", "dots8bit", "line", "line2", "pipe", "simple_dots",
+  "simple_dots_scrolling", "star", "star2", "flip", "hamburger", "grow_verticle",
+  "grow_horizontal", "balloon", "balloon2", "noise", "bounce", "box_bounce",
+  "box_bounce2", "triangle", "arc", "circle", "square_corners", "circle_quarters",
+  "circle_halves", "squish", "toggle", "toggle2", "toggle3", "toggle4", "toggle5",
+  "toggle6", "toggle7", "toggle8", "toggle9", "toggle10", "toggle11", "toggle12",
+  "toggle13", "arrow", "arrow2", "arrow3", "bouncing_bar", "bouncing_ball",
+  "smiley", "monkey", "hearts", "clock", "earth", "moon", "runner", "pong", "shark",
+  "material", "weather", "christmas", "grenade", "point", "layer", "beta_wave",
+  "finger_dance", "fist_bump", "dqpb", "soccer_header", "mindblown", "speaker",
+  "orange_pulse", "blue_pulse", "orange_blue_pulse", "time_travel", "aesthetic",
+  "binary", "cute"
+]
+
+dots = []
+dots2 = []
+dots3 = []
+dots4 = []
+dots5 = []
+dots6 = []
+dots7 = []
+dots8 = []
+dots9 = []
+dots10 = []
+dots11 = []
+dots12 = []
+dots8bit = []
+
+line = []
+line2 = []
+pipe = []
+
+simple_dots = []
+simple_dots_scrolling = []
+
+star = []
+star2 = []
+flip = []
+hamburger = []
+grow_horizontal = []
+grow_verticle = []
+balloon = []
+balloon2 = []
+noise = []
+bounce = []
+box_bounce = []
+box_bounce2 = []
+triangle = []
+arc = []
+circle = []
+square_corners = []
+circle_quarters = []
+circle_halves = []
+squish = []
+
+toggle = []
+toggle2 = []
+toggle3 = []
+toggle4 = []
+toggle5 = []
+toggle6 = []
+toggle7 = []
+toggle8 = []
+toggle9 = []
+toggle10 = []
+toggle11 = []
+toggle12 = []
+toggle13 = []
+
+arrow = []
+arrow2 = []
+arrow3 = []
+
+bouncing_bar = []
+bouncing_ball = []
+smiley = []
+monkey = []
+hearts = []
+clock = []
+earth = []
+moon = []
+runner = []
+material = []
+pong = []
+shark = []
+weather = []
+christmas = []
+grenade = []
+point = []
+layer = []
+beta_wave = []
+finger_dance = []
+fist_bump = []
+dqpb = []
+soccer_header = []
+mindblown = []
+speaker = []
+orange_pulse = []
+blue_pulse = []
+orange_blue_pulse = []
+time_travel = []
+aesthetic = []
+binary = []
+cute = []

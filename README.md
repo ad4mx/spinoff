@@ -16,11 +16,11 @@ spinoff = "0.6.0"
 ## ⚡ Usage
 
 ```rust
-use spinoff::{Spinner, Spinners, Color};
+use spinoff::{Spinner, spinners, Color};
 use std::thread::sleep;
 use std::time::Duration;
 
-let spinner = Spinner::new(Spinners::Dots, "Loading...", Color::Blue); 
+let spinner = Spinner::new(spinners::Dots, "Loading...", Color::Blue); 
 sleep(Duration::from_secs(3));
 spinner.success("Done!");
 ```
@@ -28,11 +28,11 @@ spinner.success("Done!");
 ### Update a spinner
 
 ```rust
-use spinoff::{Spinner, Spinners, Color};
+use spinoff::{Spinner, spinners, Color};
 use std::thread::sleep;
 use std::time::Duration;
 
-let mut spinner = Spinner::new(Spinners::Aesthetic, "Loading...", Color::Red); 
+let mut spinner = Spinner::new(spinners::Aesthetic, "Loading...", Color::Red); 
 sleep(Duration::from_secs(3));
 spinner.update(Spinners::Dots2, "Retrying...", None);
 sleep(Duration::from_secs(3));
@@ -42,11 +42,11 @@ spinner.stop()
 ### Stop a spinner and persist a symbol and message
 
 ```rust
-use spinoff::{Spinner, Spinners, Color};
+use spinoff::{Spinner, spinners, Color};
 use std::thread::sleep;
 use std::time::Duration;
 
-let spinner = Spinner::new(Spinners::Arc, "Loading...", Color::Green);
+let spinner = Spinner::new(spinners::Arc, "Loading...", Color::Green);
 sleep(Duration::from_secs(3));
 spinner.stop_and_persist("📜", "Task done.");
 ```
@@ -54,11 +54,11 @@ spinner.stop_and_persist("📜", "Task done.");
 ### Specify an output stream
 
 ```rust
-use spinoff::{Spinner, Spinners, Color, Streams};
+use spinoff::{Spinner, spinners, Color, Streams};
 use std::thread::sleep;
 use std::time::Duration;
 
-let spinner = Spinner::new_with_stream(Spinners::Line, "Loading...", Color::Yellow, Streams::Stderr);
+let spinner = Spinner::new_with_stream(spinners::Line, "Loading...", Color::Yellow, Streams::Stderr);
 sleep(Duration::from_secs(3));
 spinner.stop_and_persist("📜", "Task done.");
 ```
