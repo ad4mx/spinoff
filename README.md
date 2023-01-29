@@ -10,17 +10,17 @@ Add as a dependency to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-spinoff = "0.6.0"
+spinoff = "0.7.0"
 ```	
 
 ## ⚡ Usage
 
 ```rust
-use spinoff::{Spinner, Spinners, Color};
+use spinoff::{Spinner, spinners, Color};
 use std::thread::sleep;
 use std::time::Duration;
 
-let spinner = Spinner::new(Spinners::Dots, "Loading...", Color::Blue); 
+let spinner = Spinner::new(spinners::Dots, "Loading...", Color::Blue); 
 sleep(Duration::from_secs(3));
 spinner.success("Done!");
 ```
@@ -28,42 +28,55 @@ spinner.success("Done!");
 ### Update a spinner
 
 ```rust
-use spinoff::{Spinner, Spinners, Color};
+use spinoff::{Spinner, spinners, Color};
 use std::thread::sleep;
 use std::time::Duration;
 
-let mut spinner = Spinner::new(Spinners::Aesthetic, "Loading...", Color::Red); 
+let mut spinner = Spinner::new(spinners::Aesthetic, "Loading...", Color::Red); 
 sleep(Duration::from_secs(3));
 spinner.update(Spinners::Dots2, "Retrying...", None);
 sleep(Duration::from_secs(3));
 spinner.stop()
 ```
 
-### Stop a spinner and persist a symbol and message
-
-```rust
-use spinoff::{Spinner, Spinners, Color};
-use std::thread::sleep;
-use std::time::Duration;
-
-let spinner = Spinner::new(Spinners::Arc, "Loading...", Color::Green);
-sleep(Duration::from_secs(3));
-spinner.stop_and_persist("📜", "Task done.");
-```
-
 ### Specify an output stream
 
 ```rust
-use spinoff::{Spinner, Spinners, Color, Streams};
+use spinoff::{Spinner, spinners, Color, Streams};
 use std::thread::sleep;
 use std::time::Duration;
 
-let spinner = Spinner::new_with_stream(Spinners::Line, "Loading...", Color::Yellow, Streams::Stderr);
+let spinner = Spinner::new_with_stream(spinners::Line, "Loading...", Color::Yellow, Streams::Stderr);
 sleep(Duration::from_secs(3));
 spinner.stop_and_persist("📜", "Task done.");
 ```
 
-### ❗Note for Windows Users
+## 💫 Spinners
+*Note: This has been introduced in version 0.7.0*
+
+All spinner variants are treated as features that can be enabled or disabled. By default, all of them are enabled for ease of use.
+To disable/enable variants, you will have to edit your `cargo.toml` file:
+
+```toml
+[dependencies]
+spinoff = { version = "0.7.0", features = ["dots, arc, line"] }
+```
+
+### Creating your own spinner
+You can create your own spinner using the `spinner!` macro:
+
+```rust
+use spinoff::*;
+use std::thread::sleep;
+use std::time::Duration;
+
+let frames = spinner!([">", ">>", ">>>"], 100);
+let sp = Spinner::new(frames, "Hello World!", None);
+sleep(Duration::from_millis(800));
+sp.stop();
+```
+
+## ❗Note for Windows Users
 For colors to work properly, you need to add a few extra lines to your code: 
 ```rust
 use colored::control
@@ -76,17 +89,18 @@ Other examples can be found in the [documentation](https://docs.rs/spinoff/lates
 ## 📖 Documentation
 
 * All relevant documentation can be found on the [Docs.rs page](https://docs.rs/spinoff/latest/spinoff/).
-* If you want to see all the available `Spinner` options, check the [`Spinners`](src/spinner_enum.rs) enum.
+* If you want to see all the available `spinner` options, refer to [the source code](src/spinners.rs).
 
 ## ⚙ Examples
 
-To run some of the included examples, use: 
-```bash	
-cargo run --example all_spinners
-```
-
 ```bash
 cargo run --example simple
+```
+```bash
+cargo run --example stream
+```
+```bash
+cargo run --example stop_and_persist
 ```
 
 ## 🚧 Contributing
