@@ -54,7 +54,7 @@ spinner.stop_and_persist("📜", "Task done.");
 ## 💫 Spinners
 *Note: This has been introduced in version 0.7.0*
 
-All spinner variants are treated as features that can be enabled or disabled. By default, all of them are enabled for easy of use.
+All spinner variants are treated as features that can be enabled or disabled. By default, all of them are enabled for ease of use.
 To disable/enable variants, you will have to edit your `cargo.toml` file:
 
 ```toml
