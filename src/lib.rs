@@ -238,7 +238,7 @@ impl Spinner {
     let sp = Spinner::new(spinners::Dots9, "Spinning...", None);
     sleep(Duration::from_millis(800));
     sp.stop();
-    # }
+    #
     ```
 
     # Notes
