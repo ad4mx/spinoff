@@ -2,6 +2,8 @@
 use spinoff::{spinners, Color, Spinner};
 use std::{thread::sleep, time::Duration};
 
+/// This example requires the 'dots' feature to be enabled (the 'dots' feature
+/// is enabled by default).
 #[cfg(feature = "dots")]
 fn main() {
     let sp = Spinner::new(spinners::Dots, "Loading...", Color::Blue);
