@@ -15,6 +15,15 @@ sleep(Duration::from_millis(800));
 sp.success("Success!");
 ```
 
+### Spinners
+
+This crate provides 80+ spinners out of the box, which you can find in the 
+[`spinners`] module.
+
+Each spinner provided in this crate is broken up into its own feature. For 
+example, if you want to use the `dots9` spinner, you need to enable the `dots9` 
+feature in your `Cargo.toml` (the `dots` feature is enabled by default).
+
 If you want to use a custom spinner, you can use the [`spinner!`] macro.
 
 ```
@@ -27,15 +36,6 @@ let sp = Spinner::new(frames, "Loading...", None);
 sleep(Duration::from_millis(800));
 sp.success("Success!");
 ```
-
-### Spinners
-
-This crate provides 80+ spinners out of the box, which you can find in the 
-[`spinners`] module.
-
-Each spinner provided in this crate is broken up into its own feature. For 
-example, if you want to use the `dots9` spinner, you need to enable the `dots9` 
-feature in your `Cargo.toml` (the `dots` feature is enabled by default).
 
 ### Colors
 
@@ -80,12 +80,18 @@ pub struct Spinner {
 /**
 Create a new `SpinnerFrames` struct
 
+# Arguments
+
+* `frames` - An array of frames you want to use
+* `interval` - The time (in milliseconds) that will pass between frames
+
 # Example
 
 ```
 # use spinoff::*;
 # use std::thread::sleep;
 # use std::time::Duration;
+#
 let frames = spinner!([">", ">>", ">>>"], 100);
 let sp = Spinner::new(frames, "Hello World!", None);
 sleep(Duration::from_millis(800));
@@ -228,7 +234,7 @@ impl Spinner {
     # use spinoff::{spinners, Spinner};
     # use std::thread::sleep;
     # use std::time::Duration;
-    # #[cfg(feature = "dots9")] {
+    #
     let sp = Spinner::new(spinners::Dots9, "Spinning...", None);
     sleep(Duration::from_millis(800));
     sp.stop();
@@ -255,11 +261,11 @@ impl Spinner {
     # use spinoff::{spinners, Spinner};
     # use std::thread::sleep;
     # use std::time::Duration;
-    # #[cfg(feature = "dots2")] {
+    #
     let sp = Spinner::new(spinners::Dots2, "Hello", None);
     sleep(Duration::from_millis(800));
     sp.stop_with_message("Bye");
-    # }
+    #
     ```
 
     */
@@ -278,11 +284,11 @@ impl Spinner {
     # use spinoff::{spinners, Spinner};
     # use std::thread::sleep;
     # use std::time::Duration;
-    # #[cfg(feature = "mindblown")] {
+    #
     let sp = Spinner::new(spinners::Mindblown, "Guess what's coming...", None);
     sleep(Duration::from_millis(800));
     sp.stop_and_persist("🍕", "Pizza!");
-    # }
+    #
     ```
 
     */
@@ -300,11 +306,11 @@ impl Spinner {
     # use spinoff::{spinners, Spinner};
     # use std::thread::sleep;
     # use std::time::Duration;
-    # #[cfg(feature = "aesthetic")] {
+    # 
     let sp = Spinner::new(spinners::Aesthetic, "Trying to load information...", None);
     sleep(Duration::from_millis(800));
     sp.success("Success!");
-    # }
+    #
     ```
 
     */
@@ -322,11 +328,11 @@ impl Spinner {
     # use spinoff::{spinners, Spinner, Color};
     # use std::thread::sleep;
     # use std::time::Duration;
-    # #[cfg(feature = "bouncing_bar")] {
+    #
     let sp = Spinner::new(spinners::BouncingBar, "Executing code...", Color::Green);
     sleep(Duration::from_millis(800));
     sp.fail("Code failed to compile!");
-    # }
+    #
     ```
 
     */
@@ -344,11 +350,11 @@ impl Spinner {
     # use spinoff::{spinners, Spinner};
     # use std::thread::sleep;
     # use std::time::Duration;
-    # #[cfg(feature = "material")] {
+    #
     let sp = Spinner::new(spinners::Material, "Measuring network speed...", None);
     sleep(Duration::from_millis(800));
     sp.warn("You might want to check your internet connection...");
-    # }
+    #
     ```
 
     */
@@ -365,11 +371,11 @@ impl Spinner {
     # use spinoff::{spinners, Spinner};
     # use std::thread::sleep;
     # use std::time::Duration;
-    # #[cfg(feature = "dots9")] {
+    #
     let sp = Spinner::new(spinners::Dots9, "Loading info message...", None);
     sleep(Duration::from_millis(800));
     sp.info("This is an info message!");
-    # }
+    #
     ```
 
     */
@@ -387,7 +393,7 @@ impl Spinner {
     # use spinoff::*;
     # use std::thread::sleep;
     # use std::time::Duration;
-    # #[cfg(feature = "all")] {
+    #
     let mut sp = Spinner::new(spinners::Dots, "Hello", None);
 
     sleep(Duration::from_millis(800));
@@ -395,7 +401,7 @@ impl Spinner {
     sleep(Duration::from_millis(800));
 
     sp.stop();
-    # }
+    #
     ```
 
     */
@@ -421,7 +427,7 @@ impl Spinner {
     # use spinoff::*;
     # use std::thread::sleep;
     # use std::time::Duration;
-    # #[cfg(feature = "arc")] {
+    #
     let mut sp = Spinner::new(spinners::Arc, "Loading...", Color::Magenta);
     sleep(Duration::from_millis(800));
     sp.update_text("Not quite finished...");
@@ -429,7 +435,7 @@ impl Spinner {
     sp.update_text("Almost done...");
     sleep(Duration::from_millis(800));
     sp.success("Done!");
-    # }
+    #
     ```
 
     */
@@ -452,12 +458,12 @@ impl Spinner {
     # use spinoff::*;
     # use std::thread::sleep;
     # use std::time::Duration;
-    # #[cfg(feature = "arc")] {
+    #
     let mut sp = Spinner::new(spinners::Arc, "Loading...", Color::Blue);
     sp.update_after_time("Not Done Yet...", Duration::from_secs(2));
     sleep(Duration::from_millis(800));
     sp.success("Done!");
-    # }
+    #
     ```
 
     # Notes
@@ -485,11 +491,11 @@ impl Spinner {
     # use spinoff::{spinners, Spinner};
     # use std::thread::sleep;
     # use std::time::Duration;
-    # #[cfg(feature = "grenade")] {
+    #
     let sp = Spinner::new(spinners::Grenade, "Clearing...", None);
     sleep(Duration::from_millis(800));
     sp.clear();
-    # }
+    #
     ```
 
     */
