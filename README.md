@@ -1,5 +1,5 @@
 # spinoff
-> simple library for displaying spinners in the terminal
+> an easy to use, robust library for displaying spinners in the terminal
 
 [![Version](https://img.shields.io/crates/v/spinoff.svg)](https://crates.io/crates/spinoff) [![Downloads](https://img.shields.io/crates/d/spinoff)](https://crates.io/crates/spinoff) [![Docs](https://img.shields.io/docsrs/spinoff)](https://docs.rs/spinoff/latest/spinoff) [![License](https://img.shields.io/crates/l/spinoff)](https://crates.io/crates/spinoff) ![Actions](https://img.shields.io/github/actions/workflow/status/ad4mx/spinoff/rust.yml?branch=main)
 
@@ -52,8 +52,8 @@ spinner.stop_and_persist("📜", "Task done.");
 ```
 
 ## 💫 Spinners
-*Note: This has been introduced in version 0.7.0*
 
+`spinoff` includes over 80+ spinner variants out of the box. 
 All spinner variants are treated as features that can be enabled or disabled. By default, all of them are enabled for ease of use.
 To disable/enable variants, you will have to edit your `cargo.toml` file:
 
@@ -61,6 +61,8 @@ To disable/enable variants, you will have to edit your `cargo.toml` file:
 [dependencies]
 spinoff = { version = "0.7.0", features = ["dots", "arc", "line"] }
 ```
+
+Any suggestions for new spinner variants are welcome. 
 
 ### Creating your own spinner
 You can create your own spinner using the `spinner!` macro:
@@ -83,13 +85,10 @@ use colored::control
 control::enable_virtual_terminal(true).unwrap();
 ```
 
-Other examples can be found in the [documentation](https://docs.rs/spinoff/latest/spinoff/).
-
-
 ## 📖 Documentation
 
 * All relevant documentation can be found on the [Docs.rs page](https://docs.rs/spinoff/latest/spinoff/).
-* If you want to see all the available `spinner` options, refer to [the source code](src/spinners.rs).
+* If you want to see all the available `spinner` options, refer to [the `spinner` module](https://docs.rs/spinoff/0.7.0/spinoff/spinners/index.html).
 
 ## ⚙ Examples
 
@@ -102,10 +101,10 @@ cargo run --example stream
 ```bash
 cargo run --example stop_and_persist
 ```
-
+Other examples can be found in the [documentation](https://docs.rs/spinoff/latest/spinoff/).
 ## 🚧 Contributing
 
-Any contributions to this crate are highly appreciated. If you have any ideas/suggestions/bug fixes, please open an issue or a pull request.
+Any contributions to this crate are highly appreciated. If you have any ideas/suggestions/bug fixes, please open an [issue](https://github.com/ad4mx/spinoff/issues) or a [pull request](https://github.com/ad4mx/spinoff/pulls).
 If you like the project, [star this project on GitHub.](https://github.com/ad4mx/spinoff)
 
 ## 📑 License
