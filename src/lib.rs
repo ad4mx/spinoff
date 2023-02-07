@@ -49,6 +49,7 @@ Currently, the library is designed in a way that doesn't support using multiple 
 
 */
 #![allow(clippy::nursery)]
+#![warn(clippy::pedantic)]
 use colored::Colorize;
 use std::borrow::Cow;
 use std::io::Write;
@@ -201,7 +202,7 @@ impl Spinner {
                     // Get us back to the start of the line.
                     delete_last_line(last_length, stream);
                     last_length = frame_str.bytes().len();
-                    write!(stream, "{}", frame_str);
+                    write!(stream, "{frame_str}");
                     stream
                         .get_stream()
                         .flush()
@@ -272,7 +273,7 @@ impl Spinner {
     pub fn stop_with_message(mut self, msg: &str) {
         self.stop_spinner_thread();
         // put the message over the spinner
-        writeln!(self.stream, "{}", msg);
+        writeln!(self.stream, "{msg}");
     }
 
     /**
@@ -294,7 +295,7 @@ impl Spinner {
     */
     pub fn stop_and_persist(mut self, symbol: &str, msg: &str) {
         self.stop_spinner_thread();
-        writeln!(self.stream, "{} {}", symbol, msg);
+        writeln!(self.stream, "{symbol} {msg}");
     }
 
     /**
@@ -477,7 +478,7 @@ impl Spinner {
     {
         sleep(duration);
         self.stop_spinner_thread();
-        let _ = std::mem::replace(
+        let _replaced = std::mem::replace(
             self,
             Self::new_with_stream(self.spinner_frames.clone(), updated_msg, self.color, self.stream),
         );
