@@ -10,7 +10,7 @@
 # use std::thread::sleep;
 # use std::time::Duration;
 #
-let sp = Spinner::new(spinners::Dots, "Loading...", None);
+let mut sp = Spinner::new(spinners::Dots, "Loading...", None);
 sleep(Duration::from_millis(800));
 sp.success("Success!");
 ```
@@ -32,7 +32,7 @@ If you want to use a custom spinner, you can use the [`spinner!`] macro.
 # use std::time::Duration;
 #
 let frames = spinner!([">", ">>", ">>>"], 100);
-let sp = Spinner::new(frames, "Loading...", None);
+let mut sp = Spinner::new(frames, "Loading...", None);
 sleep(Duration::from_millis(800));
 sp.success("Success!");
 ```
@@ -94,7 +94,7 @@ Create a new `SpinnerFrames` struct
 # use std::time::Duration;
 #
 let frames = spinner!([">", ">>", ">>>"], 100);
-let sp = Spinner::new(frames, "Hello World!", None);
+let mut sp = Spinner::new(frames, "Hello World!", None);
 sleep(Duration::from_millis(800));
 sp.stop();
 ```
@@ -126,7 +126,7 @@ impl Spinner {
     # use std::thread::sleep;
     # use std::time::Duration;
     #
-    let sp = Spinner::new(spinners::Dots, "Hello World!", Color::Blue);
+    let mut sp = Spinner::new(spinners::Dots, "Hello World!", Color::Blue);
     sleep(Duration::from_millis(800));
     sp.stop();
     ```
@@ -161,7 +161,7 @@ impl Spinner {
     # use std::thread::sleep;
     # use std::time::Duration;
     #
-    let sp = Spinner::new_with_stream(spinners::Dots, "I'm outputting to stderr!", Color::Yellow, Streams::Stderr);
+    let mut sp = Spinner::new_with_stream(spinners::Dots, "I'm outputting to stderr!", Color::Yellow, Streams::Stderr);
     sleep(Duration::from_millis(800));
     sp.clear();
     ```
@@ -236,7 +236,7 @@ impl Spinner {
     # use std::thread::sleep;
     # use std::time::Duration;
     #
-    let sp = Spinner::new(spinners::Dots9, "Spinning...", None);
+    let mut sp = Spinner::new(spinners::Dots9, "Spinning...", None);
     sleep(Duration::from_millis(800));
     sp.stop();
     #
@@ -247,7 +247,7 @@ impl Spinner {
     * The spinner will be dropped after this method is called, the message will remain though.
 
     */
-    pub fn stop(mut self) {
+    pub fn stop(&mut self) {
         self.stop_spinner_thread();
         // print message
         writeln!(self.stream, "{}", self.msg);
@@ -263,14 +263,14 @@ impl Spinner {
     # use std::thread::sleep;
     # use std::time::Duration;
     #
-    let sp = Spinner::new(spinners::Dots2, "Hello", None);
+    let mut sp = Spinner::new(spinners::Dots2, "Hello", None);
     sleep(Duration::from_millis(800));
     sp.stop_with_message("Bye");
     #
     ```
 
     */
-    pub fn stop_with_message(mut self, msg: &str) {
+    pub fn stop_with_message(&mut self, msg: &str) {
         self.stop_spinner_thread();
         // put the message over the spinner
         writeln!(self.stream, "{msg}");
@@ -286,14 +286,14 @@ impl Spinner {
     # use std::thread::sleep;
     # use std::time::Duration;
     #
-    let sp = Spinner::new(spinners::Mindblown, "Guess what's coming...", None);
+    let mut sp = Spinner::new(spinners::Mindblown, "Guess what's coming...", None);
     sleep(Duration::from_millis(800));
     sp.stop_and_persist("🍕", "Pizza!");
     #
     ```
 
     */
-    pub fn stop_and_persist(mut self, symbol: &str, msg: &str) {
+    pub fn stop_and_persist(&mut self, symbol: &str, msg: &str) {
         self.stop_spinner_thread();
         writeln!(self.stream, "{symbol} {msg}");
     }
@@ -308,14 +308,14 @@ impl Spinner {
     # use std::thread::sleep;
     # use std::time::Duration;
     # 
-    let sp = Spinner::new(spinners::Aesthetic, "Trying to load information...", None);
+    let mut sp = Spinner::new(spinners::Aesthetic, "Trying to load information...", None);
     sleep(Duration::from_millis(800));
     sp.success("Success!");
     #
     ```
 
     */
-    pub fn success(mut self, msg: &str) {
+    pub fn success(&mut self, msg: &str) {
         self.stop_spinner_thread();
         writeln!(self.stream, "{} {}", colorize(Some(Color::Green), "✓").bold(), msg);
     }
@@ -330,14 +330,14 @@ impl Spinner {
     # use std::thread::sleep;
     # use std::time::Duration;
     #
-    let sp = Spinner::new(spinners::BouncingBar, "Executing code...", Color::Green);
+    let mut sp = Spinner::new(spinners::BouncingBar, "Executing code...", Color::Green);
     sleep(Duration::from_millis(800));
     sp.fail("Code failed to compile!");
     #
     ```
 
     */
-    pub fn fail(mut self, msg: &str) {
+    pub fn fail(&mut self, msg: &str) {
         self.stop_spinner_thread();
         writeln!(self.stream, "{} {}", colorize(Some(Color::Red), "✗").bold(), msg);
     }
@@ -352,14 +352,14 @@ impl Spinner {
     # use std::thread::sleep;
     # use std::time::Duration;
     #
-    let sp = Spinner::new(spinners::Material, "Measuring network speed...", None);
+    let mut sp = Spinner::new(spinners::Material, "Measuring network speed...", None);
     sleep(Duration::from_millis(800));
     sp.warn("You might want to check your internet connection...");
     #
     ```
 
     */
-    pub fn warn(mut self, msg: &str) {
+    pub fn warn(&mut self, msg: &str) {
         self.stop_spinner_thread();
         writeln!(self.stream, "{} {}", colorize(Some(Color::Yellow), "⚠").bold(), msg);
     }
@@ -373,14 +373,14 @@ impl Spinner {
     # use std::thread::sleep;
     # use std::time::Duration;
     #
-    let sp = Spinner::new(spinners::Dots9, "Loading info message...", None);
+    let mut sp = Spinner::new(spinners::Dots9, "Loading info message...", None);
     sleep(Duration::from_millis(800));
     sp.info("This is an info message!");
     #
     ```
 
     */
-    pub fn info(mut self, msg: &str) {
+    pub fn info(&mut self, msg: &str) {
         self.stop_spinner_thread();
         writeln!(self.stream, "{} {}", colorize(Some(Color::Blue), "ℹ").bold(), msg);
     }
@@ -493,14 +493,14 @@ impl Spinner {
     # use std::thread::sleep;
     # use std::time::Duration;
     #
-    let sp = Spinner::new(spinners::Grenade, "Clearing...", None);
+    let mut sp = Spinner::new(spinners::Grenade, "Clearing...", None);
     sleep(Duration::from_millis(800));
     sp.clear();
     #
     ```
 
     */
-    pub fn clear(mut self) {
+    pub fn clear(&mut self) {
         self.stop_spinner_thread();
     }
 
