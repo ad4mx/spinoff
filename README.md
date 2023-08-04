@@ -10,7 +10,7 @@ Add as a dependency to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-spinoff = "0.7.0"
+spinoff = "0.8.0"
 ```	
 
 ## ⚡ Usage
@@ -20,7 +20,7 @@ use spinoff::{Spinner, spinners, Color};
 use std::thread::sleep;
 use std::time::Duration;
 
-let spinner = Spinner::new(spinners::Dots, "Loading...", Color::Blue); 
+let mut spinner = Spinner::new(spinners::Dots, "Loading...", Color::Blue); 
 sleep(Duration::from_secs(3));
 spinner.success("Done!");
 ```
@@ -46,7 +46,7 @@ use spinoff::{Spinner, spinners, Color, Streams};
 use std::thread::sleep;
 use std::time::Duration;
 
-let spinner = Spinner::new_with_stream(spinners::Line, "Loading...", Color::Yellow, Streams::Stderr);
+let mut spinner = Spinner::new_with_stream(spinners::Line, "Loading...", Color::Yellow, Streams::Stderr);
 sleep(Duration::from_secs(3));
 spinner.stop_and_persist("📜", "Task done.");
 ```
@@ -59,7 +59,7 @@ To disable/enable variants, you will have to edit your `cargo.toml` file:
 
 ```toml
 [dependencies]
-spinoff = { version = "0.7.0", features = ["dots", "arc", "line"] }
+spinoff = { version = "0.8.0", features = ["dots", "arc", "line"] }
 ```
 
 Any suggestions for new spinner variants are welcome. 
@@ -73,7 +73,7 @@ use std::thread::sleep;
 use std::time::Duration;
 
 let frames = spinner!([">", ">>", ">>>"], 100);
-let sp = Spinner::new(frames, "Hello World!", None);
+let mut sp = Spinner::new(frames, "Hello World!", None);
 sleep(Duration::from_millis(800));
 sp.stop();
 ```
