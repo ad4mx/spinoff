@@ -82,7 +82,7 @@ sp.stop();
 For colors to work properly, you need to add a few extra lines to your code: 
 ```rust
 use colored::control
-control::enable_virtual_terminal(true).unwrap();
+control::set_virtual_terminal(true).unwrap();
 ```
 
 ## 📖 Documentation
