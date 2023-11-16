@@ -1,4 +1,3 @@
-use crate::Streams;
 use colored::{ColoredString, Colorize};
 
 /// Color for spinner. Supports the 8 basic colors and a custom color variant.
@@ -27,18 +26,6 @@ pub fn colorize(color: Option<Color>, frame: &str) -> ColoredString {
         Some(Color::Black) => frame.black(),
         Some(Color::Magenta) => frame.magenta(),
         Some(Color::TrueColor { r, g, b }) => frame.truecolor(r, g, b),
-        None => frame.normal()
+        None => frame.normal(),
     }
 }
-
-/// Internal function for deleting the last line in a terminal.
-/// This is used to clear the spinner.
-pub fn delete_last_line(clear_length: usize, stream: Streams) {
-    write!(stream, "\r");
-    for _ in 0..clear_length {
-        write!(stream, " ");
-    }
-    write!(stream, "\r");
-}
-
-

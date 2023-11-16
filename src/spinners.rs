@@ -537,7 +537,7 @@ spinner_frames!(
 spinner_frames!("speaker", ["🔈 ", "🔉 ", "🔊 ", "🔉 "], 160);
 
 spinner_frames!("orange_pulse", ["🔸 ", "🔶 ", "🟠 ", "🟠 ", "🔶 "], 100);
- 
+
 spinner_frames!("blue_pulse", ["🔹 ", "🔷 ", "🔵 ", "🔵 ", "🔷 "], 100);
 
 spinner_frames!(

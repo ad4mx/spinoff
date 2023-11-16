@@ -24,5 +24,11 @@ impl Streams {
     {
         write!(self.get_stream(), "{fmt}").expect("error: failed to write to stream");
     }
-
+}
+pub fn delete_last_line(clear_length: usize, stream: Streams) {
+    write!(stream, "\r");
+    for _ in 0..clear_length {
+        write!(stream, " ");
+    }
+    write!(stream, "\r");
 }

@@ -17,11 +17,11 @@ sp.success("Success!");
 
 ### Spinners
 
-This crate provides 80+ spinners out of the box, which you can find in the 
+This crate provides 80+ spinners out of the box, which you can find in the
 [`spinners`] module.
 
-Each spinner provided in this crate is broken up into its own feature. For 
-example, if you want to use the `dots9` spinner, you need to enable the `dots9` 
+Each spinner provided in this crate is broken up into its own feature. For
+example, if you want to use the `dots9` spinner, you need to enable the `dots9`
 feature in your `Cargo.toml` (the `dots` feature is enabled by default).
 
 If you want to use a custom spinner, you can use the [`spinner!`] macro.
@@ -58,14 +58,17 @@ use std::thread::sleep;
 use std::thread::{self, JoinHandle};
 use std::time::Duration;
 
-pub mod spinners;
+mod color;
 mod streams;
-mod utils;
 
+pub mod spinners;
+
+use color::colorize;
 use spinners::SpinnerFrames;
+use streams::delete_last_line;
+
+pub use color::Color;
 pub use streams::Streams;
-pub use utils::Color;
-use utils::{colorize, delete_last_line};
 
 /// Terminal spinner.
 pub struct Spinner {
@@ -183,38 +186,14 @@ impl Spinner {
         let msg = msg.into();
         let color = color.into();
         // We use atomic bools to make the thread stop itself when the `spinner.stop()` method is called.
-        let handle = thread::spawn({
-            // Clone the atomic bool so that we can use it in the thread and return the original one later.
-            let still_spinning = Arc::clone(&still_spinning);
-            let spinner_frames = spinner_frames.clone();
-            let msg = msg.clone();
-            move || {
-                // Iterate over all the frames of the spinner while the atomic bool is true.
-                let frames = spinner_frames
-                    .frames
-                    .iter()
-                    .cycle()
-                    .take_while(|_| still_spinning.load(std::sync::atomic::Ordering::Relaxed));
-                // Dynamically delete the last line of the terminal depending on the length of the message + spinner.
-                let mut last_length = 0;
-                for frame in frames {
-                    let frame_str = format!("{} {}", colorize(color, frame), msg);
-                    // Get us back to the start of the line.
-                    delete_last_line(last_length, stream);
-                    last_length = frame_str.bytes().len();
-                    write!(stream, "{frame_str}");
-                    stream
-                        .get_stream()
-                        .flush()
-                        .expect("error: failed to flush stream");
-
-                    thread::sleep(std::time::Duration::from_millis(
-                        u64::from(spinner_frames.interval)
-                    ));
-                }
-                delete_last_line(last_length, stream);
-            }
-        });
+        // Clone the atomic bool so that we can use it in the thread and return the original one later.
+        let handle = Self::get_handle(
+            Arc::clone(&still_spinning),
+            spinner_frames.clone(),
+            msg.clone(),
+            color,
+            stream,
+        );
 
         // Return a Spinner struct
         Self {
@@ -225,6 +204,59 @@ impl Spinner {
             stream,
             color,
         }
+    }
+    fn get_handle(
+        still_spinning: Arc<AtomicBool>,
+        spinner_frames: SpinnerFrames,
+        msg: Cow<'static, str>,
+        color: Option<Color>,
+        stream: Streams,
+    ) -> JoinHandle<()> {
+        thread::spawn({
+            move || {
+                
+                let frames = Self::iterate_over_frames(
+                    &spinner_frames,
+                    still_spinning.load(std::sync::atomic::Ordering::Relaxed),
+                );
+                // Dynamically delete the last line of the terminal depending on the length of the message + spinner.
+                let mut last_length = 0;
+                for frame in frames {
+                    let frame_str = format!("{} {}", colorize(color, frame), msg);
+                    // Get us back to the start of the line.
+                    delete_last_line(last_length, stream);
+                    last_length = frame_str.bytes().len();
+                    write!(stream, "{frame_str}");
+                    
+                    Self::flush_stream(&stream);
+
+                    Self::wait_till_next_frame(&spinner_frames);
+                }
+                delete_last_line(last_length, stream);
+            }
+        })
+    }
+    // Iterate over all the frames of the spinner while the bool is true.
+    fn iterate_over_frames(
+        spinner_frames: &SpinnerFrames,
+        still_spinning: bool,
+    ) -> impl Iterator<Item = &&str> {
+        spinner_frames
+            .frames
+            .iter()
+            .cycle()
+            .take_while(move |_| still_spinning)
+    }
+    fn flush_stream(stream: &Streams) {
+        stream
+            .get_stream()
+            .flush()
+            .expect("error: failed to flush stream");
+    }
+    fn wait_till_next_frame(spinner_frames: &SpinnerFrames) {
+        thread::sleep(std::time::Duration::from_millis(u64::from(
+            spinner_frames.interval,
+        )));
     }
     /**
     Stop the spinner.
@@ -307,7 +339,7 @@ impl Spinner {
     # use spinoff::{spinners, Spinner};
     # use std::thread::sleep;
     # use std::time::Duration;
-    # 
+    #
     let mut sp = Spinner::new(spinners::Aesthetic, "Trying to load information...", None);
     sleep(Duration::from_millis(800));
     sp.success("Success!");
@@ -317,7 +349,12 @@ impl Spinner {
     */
     pub fn success(&mut self, msg: &str) {
         self.stop_spinner_thread();
-        writeln!(self.stream, "{} {}", colorize(Some(Color::Green), "✓").bold(), msg);
+        writeln!(
+            self.stream,
+            "{} {}",
+            colorize(Some(Color::Green), "✓").bold(),
+            msg
+        );
     }
 
     /**
@@ -339,7 +376,12 @@ impl Spinner {
     */
     pub fn fail(&mut self, msg: &str) {
         self.stop_spinner_thread();
-        writeln!(self.stream, "{} {}", colorize(Some(Color::Red), "✗").bold(), msg);
+        writeln!(
+            self.stream,
+            "{} {}",
+            colorize(Some(Color::Red), "✗").bold(),
+            msg
+        );
     }
 
     /**
@@ -361,7 +403,12 @@ impl Spinner {
     */
     pub fn warn(&mut self, msg: &str) {
         self.stop_spinner_thread();
-        writeln!(self.stream, "{} {}", colorize(Some(Color::Yellow), "⚠").bold(), msg);
+        writeln!(
+            self.stream,
+            "{} {}",
+            colorize(Some(Color::Yellow), "⚠").bold(),
+            msg
+        );
     }
     /**
     Deletes the last line of the terminal and prints an info symbol with a message.
@@ -382,7 +429,12 @@ impl Spinner {
     */
     pub fn info(&mut self, msg: &str) {
         self.stop_spinner_thread();
-        writeln!(self.stream, "{} {}", colorize(Some(Color::Blue), "ℹ").bold(), msg);
+        writeln!(
+            self.stream,
+            "{} {}",
+            colorize(Some(Color::Blue), "ℹ").bold(),
+            msg
+        );
     }
 
     /**
@@ -474,13 +526,18 @@ impl Spinner {
     */
     pub fn update_after_time<T>(&mut self, updated_msg: T, duration: Duration)
     where
-        T: Into<Cow<'static, str>>
+        T: Into<Cow<'static, str>>,
     {
         sleep(duration);
         self.stop_spinner_thread();
         let _replaced = std::mem::replace(
             self,
-            Self::new_with_stream(self.spinner_frames.clone(), updated_msg, self.color, self.stream),
+            Self::new_with_stream(
+                self.spinner_frames.clone(),
+                updated_msg,
+                self.color,
+                self.stream,
+            ),
         );
     }
     /**
