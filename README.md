@@ -34,7 +34,7 @@ use std::time::Duration;
 
 let mut spinner = Spinner::new(spinners::Aesthetic, "Loading...", Color::Red); 
 sleep(Duration::from_secs(3));
-spinner.update(Spinners::Dots2, "Retrying...", None);
+spinner.update(spinners::Dots2, "Retrying...", None);
 sleep(Duration::from_secs(3));
 spinner.stop()
 ```
