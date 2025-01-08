@@ -78,6 +78,9 @@ sleep(Duration::from_millis(800));
 sp.stop();
 ```
 
+### Multiline messages
+`spinoff` doesn't support spinners with multiline text out of the box. If you want to use it in your project, please look at [#27](https://github.com/ad4mx/spinoff/issues/27).
+
 ## ❗Note for Windows Users
 For colors to work properly, you need to add a few extra lines to your code: 
 ```rust
